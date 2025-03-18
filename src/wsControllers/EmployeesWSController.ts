@@ -5,35 +5,34 @@ import { UserService } from '@footy/services';
 
 @Service()
 export class EmployeesWSController {
-    @Inject()
-    private userService!: UserService;
+  @Inject()
+  private userService!: UserService;
 
-    private namespace: string = '/employees';
+  private namespace: string = '/employees';
 
-    getNamespace(): string {
-        return this.namespace;
-    }
+  getNamespace(): string {
+    return this.namespace;
+  }
 
-    async handleConnection(socket: Socket, io: Server): Promise<void> {
-        console.log('client connected');
-        const allUsers = await this.userService.getAllUsers();
-        socket.emit('all', allUsers);
-    }
+  async handleConnection(socket: Socket, io: Server): Promise<void> {
+    console.log('client connected');
+    const allUsers = await this.userService.getAllUsers();
+    socket.emit('all', allUsers);
+  }
 
-    disconnect(socket: Socket): void {
-        console.log('client disconnected');
-    }
+  disconnect(socket: Socket): void {
+    console.log('client disconnected');
+  }
 
-
-    registerEvents(socket: Socket, io: Server): void {
-        socket.on('load', async (email: string) => {
-            try {
-                const user = await this.userService.getOne(email);
-                socket.emit('done', user);
-            } catch (error) {
-                console.error('Error loading user:', error);
-                socket.emit('error', { message: 'Failed to load user' });
-            }
-        });
-    }
+  registerEvents(socket: Socket, io: Server): void {
+    socket.on('load', async (email: string) => {
+      try {
+        const user = await this.userService.getOne(email);
+        socket.emit('done', user);
+      } catch (error) {
+        console.error('Error loading user:', error);
+        socket.emit('error', { message: 'Failed to load user' });
+      }
+    });
+  }
 }
