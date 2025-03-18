@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-      "outDir": "dist",
+  "outDir": "temp",
       "target": "es2015",
       "module": "CommonJS",
       "strict": true,
@@ -26,16 +26,16 @@
       "removeComments": true,
       "moduleResolution": "node",
       "resolveJsonModule": true,
-      "baseUrl": "src",
+      "baseUrl": ".",
       "paths": {
         "@footy/*": [
-          "*"
+          "./src/*"
         ]
       }
     },
     "exclude": [
-      "node_modules",
-      "dist",
-      "temp"
+        "node_modules",
+        "temp",
+        "dist"
     ]
   }

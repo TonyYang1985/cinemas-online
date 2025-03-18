@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import { MicroframeworkSettings } from 'microframework';
-import { upstreamUriTemplate, upstreamTemplate, serviceUriTemplate, serviceTemplate, routeUriTemplate, routeTemplate, httpPut } from '~/fmk/libs/apisix';
-import { ApplicationConfig, ConfigManager } from '~/fmk/libs/configure';
-import { Logger } from '~/fmk/libs/logger';
+import { upstreamUriTemplate, upstreamTemplate, serviceUriTemplate, serviceTemplate, routeUriTemplate, routeTemplate, httpPut } from '@footy/fmk/libs/apisix';
+import { ApplicationConfig, ConfigManager } from '@footy/fmk/libs/configure';
+import { Logger } from '@footy/fmk/libs/logger';
 
 export type ApiGatewayLoaderOption = unknown;
 const sleep = (ms: number) => {

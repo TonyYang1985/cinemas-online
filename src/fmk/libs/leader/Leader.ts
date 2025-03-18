@@ -2,10 +2,10 @@ import crypto from 'crypto';
 import EventEmitter from 'eventemitter3';
 import Redis from 'ioredis';
 import { Service } from 'typedi';
-import { ApplicationConfig, ConfigManager } from '~/fmk/libs/configure';
-import { id } from '~/fmk/libs/generator';
-import { Logger } from '~/fmk/libs/logger';
-import { RedisClient } from '~/fmk/libs/redis';
+import { ApplicationConfig, ConfigManager } from '@footy/fmk/libs/configure';
+import { id } from '@footy/fmk/libs/generator';
+import { Logger } from '@footy/fmk/libs/logger';
+import { RedisClient } from '@footy/fmk/libs/redis';
 import { LeaderOptions } from './LeaderOptions';
 
 // Make the key less prone to collision

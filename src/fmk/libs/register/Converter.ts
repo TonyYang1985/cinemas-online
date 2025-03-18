@@ -1,5 +1,5 @@
-import { ApplicationConfig, ConfigManager } from '~/fmk/libs/configure';
-import { HttpMethodsRegistry, MenuRegistry, UIRegistry } from './ResRegTypes';
+import { ApplicationConfig, ConfigManager } from '@footy/fmk/libs/configure';
+import { HttpMethodsRegistry, MenuRegistry, UIRegistry } from '@footy/fmk/libs/register/ResRegTypes';
 
 export type ApiData = Array<{
   app: string;

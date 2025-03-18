@@ -12,8 +12,8 @@
         "devPro": "cross-env ENABLE_API_GATEWAY=true API_GATEWAY_HOST_PORT=192.168.52.35:80 DOMAINS=foo.sg,*.foo.sg NODE_ENV=production tsc-watch --onSuccess \"node -r tsconfig-paths/register -r source-map-support/register ./temp/example/app.js\"",
         "upver": "ncu -u && yarn install",
         "lint": "tsc --noEmit && eslint '*/**/*.ts' --quiet --fix",
-        "precommit": "yarn lint",
-        "prepublish": "yarn rimraf dist && mkdir dist && tsc && shx cp -r temp/src/* dist/ && rimraf temp"
+        "precommit": "yarn lint"
+
     },
     "devDependencies": {
         "@types/jest": "^29.5.11",

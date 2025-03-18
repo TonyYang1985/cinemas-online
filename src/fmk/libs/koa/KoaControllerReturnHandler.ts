@@ -2,8 +2,8 @@ import { ValidationError } from 'class-validator';
 import { Context } from 'koa';
 import { KoaMiddlewareInterface, Middleware, NotFoundError } from 'routing-controllers';
 import { Service } from 'typedi';
-import { BizError } from '~/fmk/libs/error';
-import { Logger } from '~/fmk/libs/logger';
+import { BizError } from '@footy/fmk/libs/error';
+import { Logger } from '@footy/fmk/libs/logger';
 
 const transformer = (errors: ValidationError[]) => {
   const err: Record<string, any> = {};

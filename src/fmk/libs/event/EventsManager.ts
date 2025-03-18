@@ -1,7 +1,7 @@
 import { Container } from 'typedi';
 import { DistributedEvents } from './DistributedEvents';
-import { Logger } from '~/fmk/libs/logger';
-import { ClassType } from '~/fmk/libs/type';
+import { Logger } from '@footy/fmk/libs/logger';
+import { ClassType } from '@footy/fmk/libs/type';
 
 export function onEvent(event: string) {
   return (target: any, propertyKey: string) => {
