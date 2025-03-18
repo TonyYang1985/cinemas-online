@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "baseUrl": "src",
+    "baseUrl": "./temp",
     "paths": {
       "@footy/*": [
-        "*"
+        "./src/*"
       ]
     }
   }

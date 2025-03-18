@@ -3370,7 +3370,7 @@ fs.realpath@^1.0.0:
 
 fsevents@^2.3.2, fsevents@~2.3.2:
   version "2.3.3"
-  resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-2.3.3.tgz#cac6407785d03675a2a5e1a5305c697b347d90d6"
+  resolved "https://registry.npmjs.org/fsevents/-/fsevents-2.3.3.tgz"
   integrity sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==
 
 function-bind@^1.1.2:
@@ -5168,6 +5168,11 @@ merge-descriptors@1.0.3:
   version "1.0.3"
   resolved "https://registry.npmjs.org/merge-descriptors/-/merge-descriptors-1.0.3.tgz"
   integrity sha512-gaNvAS7TZ897/rVaZ0nMtAyxNyi/pdbjbAwUpFQpN70GqnVfOiXpeUUMKRBmzXaSQ8DdTX4/0ms62r2K+hE6mQ==
+
+merge-json@^0.1.0-b.3:
+  version "0.1.0-b.3"
+  resolved "https://registry.yarnpkg.com/merge-json/-/merge-json-0.1.0-b.3.tgz#448e118424c7752af2adca83fbb049758596a680"
+  integrity sha512-s4iKmcrA659EZrbhU42sAqywaA4cDMJ7372FvC1UySnIFKBGssORDcOO6dLMfYc2ZsUmHJmrcWkUzuO9fIIj7w==
 
 merge-stream@^2.0.0:
   version "2.0.0"
