@@ -1,11 +1,10 @@
 {
     "compilerOptions": {
-  "outDir": "temp",
+      "outDir": "temp",
       "target": "es2015",
       "module": "CommonJS",
       "strict": true,
-      "noImplicitAny": false,
-      "strictNullChecks": true,
+      "noImplicitAny": true,
       "esModuleInterop": true,
       "experimentalDecorators": true,
       "emitDecoratorMetadata": true,
@@ -13,12 +12,7 @@
       "declaration": true,
       "skipLibCheck": true,
       "lib": [
-        "es2015",
-        "es2016",
-        "es2017",
-        "es2018",
-        "esnext",
-        "dom",
+        "es5",
         "esnext.asynciterable",
         "esnext.bigint"
       ],
@@ -34,8 +28,8 @@
       }
     },
     "exclude": [
-        "node_modules",
-        "temp",
-        "dist"
+      "node_modules",
+      "temp",
+      "dist"
     ]
   }

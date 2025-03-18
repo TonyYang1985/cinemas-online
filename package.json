@@ -9,11 +9,18 @@
     "types": "dist/index.d.ts",
     "scripts": {
         "dev": "cross-env NODE_ENV=development TS_NODE_PROJECT=dev.json tsc-watch --onSuccess \"node -r tsconfig-paths/register -r source-map-support/register ./temp/src/app.js\"",
-        "devPro": "cross-env ENABLE_API_GATEWAY=true API_GATEWAY_HOST_PORT=192.168.52.35:80 DOMAINS=foo.sg,*.foo.sg NODE_ENV=production tsc-watch --onSuccess \"node -r tsconfig-paths/register -r source-map-support/register ./temp/example/app.js\"",
-        "upver": "ncu -u && yarn install",
+        "production": "cross-env ENABLE_API_GATEWAY=true API_GATEWAY_HOST_PORT=192.168.52.35:80 DOMAINS=foo.sg,*.foo.sg NODE_ENV=production tsc-watch --onSuccess \"node -r tsconfig-paths/register -r source-map-support/register ./temp/example/app.js\"",
+        "ncc:build": "ncc build ./src/app.ts -m -o ./dist/single -e sqlite3 --no-source-map-register && ncc cache clean",
+        "ncc:run": "cross-env NODE_ENV=development ncc run ./src/app.ts",
+        "buildNum": "yarn npe buildNumber $(yarn -s buildnumgen)",
+        "gen:idx": "cti create ./src && rm -f ./src/index.ts ./src/services/index.ts ./src/vo/index.ts",
+        "gen:idx:watch": "nodemon",
+        "gen:db-schema": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register tools/DBSchemaGenerator.ts",
+        "gen:db-repo": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register tools/RepositoryGenerator.ts",
+        "gen:db": "yarn gen:db-schema && yarn gen:db-repo && yarn gen:idx && eslint '*/**/*.ts' --quiet --fix",
+        "gen:keys": "openssl genrsa -out ./keys/privateKey.pem 2048 && openssl rsa -in ./keys/privateKey.pem -outform PEM -pubout -out ./keys/publicKey.pem",
         "lint": "tsc --noEmit && eslint '*/**/*.ts' --quiet --fix",
         "precommit": "yarn lint"
-
     },
     "devDependencies": {
         "@types/jest": "^29.5.11",
@@ -28,6 +35,7 @@
         "@types/pino": "^7.0.4",
         "@typescript-eslint/eslint-plugin": "^6.15.0",
         "@typescript-eslint/parser": "^6.15.0",
+        "create-ts-index": "^1.14.0",
         "cross-env": "^7.0.3",
         "eslint": "^8.56.0",
         "eslint-config-prettier": "^9.1.0",
