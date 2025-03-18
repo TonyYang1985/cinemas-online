@@ -1,0 +1,1 @@
+redis: "redis://db.sg.fot.cool:6379/10"

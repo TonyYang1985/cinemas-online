@@ -1,0 +1,2 @@
+mariaDBUrl: mysql://fot:fot@db.sg.fot.cool:3306/fot_database
+output: ./example

@@ -1,0 +1,10 @@
+{
+    "verbose": false,
+    "ignore": [
+        "tools/*",
+        "node_modules/*",
+        "index.ts"
+    ],
+    "ext": "ts,tsx",
+    "exec": "yarn gen:idx"
+}

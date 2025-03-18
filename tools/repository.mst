@@ -1,0 +1,15 @@
+// { }
+import { Service } from 'typedi';
+import { {{toEntityName tscName}} } from '~/entities';
+import { Repository } from 'typeorm';
+import { InjectRepository } from 'typeorm-typedi-extensions';
+
+@Service()
+export class {{toEntityName tscName}}Repo {
+    constructor(
+        @InjectRepository({{toEntityName tscName}})
+        private repository: Repository<{{toEntityName tscName}}>
+    ) {}
+
+    // Add your code here
+}

@@ -1,0 +1,5 @@
+appName: example
+version: 1
+port: 3000
+privateKeyPath: ./keys/privateKey
+publicKeyPath: ./keys/publicKey

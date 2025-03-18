@@ -1,8 +1,10 @@
 node_modules
 dist
 .cache
+.vscode
+.git
+tools
 *.log
-report.*.json
 temp
 redisdata
 mysqldata
