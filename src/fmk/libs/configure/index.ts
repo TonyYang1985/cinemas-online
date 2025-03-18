@@ -1,2 +1,4 @@
-export * from './ConfigManager';
+// created from 'create-ts-index'
+
 export * from './ApplicationConfig';
+export * from './ConfigManager';

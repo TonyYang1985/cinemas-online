@@ -1,3 +1,5 @@
-export * from './DistributedEventsLoader';
+// created from 'create-ts-index'
+
 export * from './DistributedEvents';
+export * from './DistributedEventsLoader';
 export * from './EventsManager';

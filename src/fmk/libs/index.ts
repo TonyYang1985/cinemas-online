@@ -1,6 +1,8 @@
-export * from './apisix';  
-export * from './deps';      
-export * from './configure';    
+// created from 'create-ts-index'
+
+export * from './apisix';
+export * from './configure';
+export * from './deps';
 export * from './error';
 export * from './event';
 export * from './gateway';

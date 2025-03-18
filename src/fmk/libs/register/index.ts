@@ -1,5 +1,6 @@
+// created from 'create-ts-index'
 
-export * from './HttpMethods';
-export * from './Converter';
 export * from './ApiRegisterController';
+export * from './Converter';
+export * from './HttpMethods';
 export * from './ResRegTypes';

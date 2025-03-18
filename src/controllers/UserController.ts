@@ -2,9 +2,9 @@ import { Get, JsonController, Logger, Post, Put, rest } from '@footy/fmk';
 import { Inject } from 'typedi';
 import { SystemConfigsService } from '@footy/services';
 
-@JsonController('/configs')
-export class SystemConfigsController {
-  private logger = Logger.getLogger(SystemConfigsController);
+@JsonController('/user')
+export class UserController {
+  private logger = Logger.getLogger(UserController);
 
   @Inject()
   private systemConfigsService: SystemConfigsService;
