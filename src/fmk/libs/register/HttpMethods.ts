@@ -1,5 +1,5 @@
 import * as rc from 'routing-controllers';
-import { Service } from 'typedi';
+import {  Service } from 'typedi';
 import { ApplicationConfig, ConfigManager } from '@footy/fmk/libs/configure';
 import { HttpMethodsRegistry } from './ResRegTypes';
 
@@ -18,8 +18,10 @@ const HttpMethod = (mName: string, method: (route: any) => any, route: string, a
             tempRegistry[DEFAULT_KEY][route] = [];
         }
         tempRegistry[DEFAULT_KEY][route].push({ app, functionName: functionName ?? 'internal', method: mName, _apiName: apiName });
-
+        Service()(target);
         method(route)(target, propertyKey, descriptor);
+        console.log('route', route);
+        console.log('decorator', target, propertyKey, descriptor);
     };
     return decorator;
 };
@@ -50,6 +52,8 @@ export const JsonController = (baseRoute?: string) => {
             httpMethodsRegistry[baseRoute ?? ''] = Object.assign({}, httpMethodsRegistry[baseRoute ?? ''], tempRegistry[DEFAULT_KEY]);
         }
         tempRegistry[DEFAULT_KEY] = {};
+        console.log('baseRoute', baseRoute);
+        console.log('target', target);
         rc.JsonController(baseRoute)(target);
         Service()(target);
     };
