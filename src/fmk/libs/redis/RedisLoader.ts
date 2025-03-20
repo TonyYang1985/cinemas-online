@@ -1,6 +1,6 @@
 import { MicroframeworkSettings } from 'microframework';
 import { Container } from 'typedi';
-import { DatabaseConfig ,ConfigManager} from '@footy/fmk/libs/configure';
+import { DatabaseConfig, ConfigManager } from '@footy/fmk/libs/configure';
 import { Logger } from '@footy/fmk/libs/logger';
 import { RedisClient } from './RedisClient';
 
