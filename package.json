@@ -52,11 +52,11 @@
         "prettier-plugin-organize-imports": "^3.2.4",
         "rimraf": "^5.0.5",
         "shx": "^0.4.0",
-        "ts-jest": "^29.1.1",
+        "ts-jest": "^29.2.6",
         "ts-node": "^10.9.2",
-        "tsc-watch": "^6.0.4",
+        "tsc-watch": "^6.2.1",
         "tsconfig-paths": "^4.2.0",
-        "typescript": "^5.3.3"
+        "typescript": "^5.8.2"
     },
     "dependencies": {
         "@koa/cors": "^4.0.0",
