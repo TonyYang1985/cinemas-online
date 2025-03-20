@@ -174,8 +174,7 @@ export const koaLoader = (option: KoaLoaderOption) => (options?: MicroframeworkS
 
 
 function setupSocketControllers(io: SocketIO.Server, controllers: ClassType[]) {
-  console.log('Setting up Socket.IO controllers');
-
+  //console.log('Setting up Socket.IO controllers');
   for (const controllerClass of controllers) {
     try {
       let controller;
@@ -192,7 +191,7 @@ function setupSocketControllers(io: SocketIO.Server, controllers: ClassType[]) {
         namespace = controller.namespace;
       }
       const nsp = namespace === '/' ? io : io.of(namespace);
-      console.log(`Setting up Socket controller ${controllerClass.name} on namespace: ${namespace}`);
+      //console.log(`Setting up Socket controller ${controllerClass.name} on namespace: ${namespace}`);
       nsp.on('connection', (socket) => {
         console.log(`Socket connected to ${namespace}: ${socket.id}`);
         if (typeof controller.handleConnection === 'function') {
@@ -209,7 +208,8 @@ function setupSocketControllers(io: SocketIO.Server, controllers: ClassType[]) {
           }
         });
       });
-      console.log(`Registered Socket controller: ${controllerClass.name}`);
+      //console.log(`Registered Socket controller: ${controllerClass.name}`);
+      console.log(`Registered Socket controller ${controllerClass.name} on namespace: ${namespace} Done`);
     } catch (error) {
       console.error(`Error setting up Socket controller ${controllerClass.name}:`, error);
     }
