@@ -7,6 +7,7 @@ import { URL } from 'url';
 import { DatabaseConfig, ConfigManager } from '@footy/fmk/libs/configure';
 import { Logger } from '@footy/fmk/libs/logger';
 import { ClassType } from '@footy/fmk/libs/type';
+import Container from 'typedi';
 
 initializeTransactionalContext();
 patchTypeORMRepositoryWithBaseRepository();
@@ -36,11 +37,12 @@ export const typeormLoader = (option: TypeormLoaderOption) => (settings?: Microf
 
   return dataSource
     .initialize()
-    .then((conn) => {
-      settings?.onShutdown(async () => await conn.destroy());
+    .then((dataSource) => {
+      settings?.onShutdown(async () => await dataSource.destroy());
       const logger = Logger.getLogger('TypeormLoader');
       logger.info(`🔗Database connected to ${dbUrl.hostname}:${dbUrl.port}${dbUrl.pathname}. CPU: ${cpus().length}`);
-      return conn;
+      Container.set(DataSource, dataSource);
+      return dataSource;
     })
     .catch((error) => {
       const logger = Logger.getLogger('TypeormLoader');
