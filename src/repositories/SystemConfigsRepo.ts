@@ -15,23 +15,18 @@ export class SystemConfigsRepo {
     findByName(name: string) {
         return this.repository.findOne({ where: { configName:name } });
     }
-    
-    // Pass-through methods to repository
     async find(options?: any) {
         return this.repository.find(options);
     }
-    
     async findOne(options?: any) {
         if (typeof options === 'object' && options.where) {
             return this.repository.findOne(options);
         }
         return this.repository.findOneBy(options as FindOptionsWhere<SystemConfigs>);
     }
-    
     async save(entity: SystemConfigs | Partial<SystemConfigs>) {
         return this.repository.save(entity);
     }
-    
     async insert(entity: SystemConfigs | Partial<SystemConfigs>) {
         return this.repository.insert(entity);
     }

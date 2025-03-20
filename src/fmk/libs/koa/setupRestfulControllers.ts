@@ -6,7 +6,6 @@ import { KoaControllerReturnHandler } from './KoaControllerReturnHandler';
 import { jwtUtil } from '@footy/fmk/utils';
 import { ConfigManager } from '@footy/fmk/libs/configure';
 import _ from 'lodash';
-import { HealthCheckController } from '@footy/fmk';
 
 /**
  * 设置 Restful Controllers
@@ -45,7 +44,6 @@ export function setupRestfulControllers(app: Koa, controllers: ClassType[], rout
 
   // 设置控制器
   const allControllers = [...controllers];
-  //allControllers.push(HealthCheckController as any);
   useKoaServerOption.controllers = allControllers;
   // 设置授权检查
   if (authorizationChecker) {
