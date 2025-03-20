@@ -1,4 +1,4 @@
-appName: example
+appName: cinemas-online
 version: 1
 port: 3000
 privateKeyPath: ./keys/privateKey
