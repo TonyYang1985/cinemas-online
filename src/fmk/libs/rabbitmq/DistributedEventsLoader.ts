@@ -9,7 +9,7 @@ import { ClassType } from '@footy/fmk/libs/type';
 export type DistributedEventsLoaderOption = {
   eventsHandlers?: ClassType[];
 };
-export const distributedEventsLoader = (option: DistributedEventsLoaderOption) => (settings?: MicroframeworkSettings) => {
+export const rabbitmqLoader = (option: DistributedEventsLoaderOption) => (settings?: MicroframeworkSettings) => {
   const appCfg = ConfigManager.getConfig<ApplicationConfig>('application');
   const rabbitmqCfg = ConfigManager.getConfig<RabbitMQConfig>('rabbitmq');
   return DistributedEvents.open(rabbitmqCfg, appCfg.appName).then((events) => {

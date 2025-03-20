@@ -4,7 +4,7 @@ export * from './apisix';
 export * from './configure';
 export * from './deps';
 export * from './error';
-export * from './event';
+export * from './rabbitmq';
 export * from './gateway';
 export * from './generator';
 export * from './healthcheck';

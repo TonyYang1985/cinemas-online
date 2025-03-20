@@ -1,0 +1,29 @@
+version: "3.5"
+
+services:
+  rabbitmq:
+    image: "bitnami/rabbitmq:3.11"
+    hostname: rabbitmq
+    networks:
+      - fotNet
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - "rabbitmq_data:/bitnami/rabbitmq/data"
+    deploy:
+      restart_policy:
+        condition: any
+    environment:
+      - RABBITMQ_USERNAME=admin
+      - RABBITMQ_PASSWORD=admin
+      - RABBITMQ_PLUGINS=rabbitmq_management
+      - RABBITMQ_SECURE_PASSWORD=no
+
+volumes:
+  rabbitmq_data:
+    driver: local
+
+networks:
+  fotNet:
+    external: true

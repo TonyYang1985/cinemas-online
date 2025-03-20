@@ -1,0 +1,1 @@
+connection: amqp://admin:admin@rabbitmq_rabbitmq:5672/
