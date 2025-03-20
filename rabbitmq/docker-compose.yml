@@ -19,6 +19,10 @@ services:
       - RABBITMQ_PASSWORD=admin
       - RABBITMQ_PLUGINS=rabbitmq_management
       - RABBITMQ_SECURE_PASSWORD=no
+      - RABBITMQ_ALLOW_EMPTY_PASSWORD=no
+      - RABBITMQ_NODE_TYPE=queue-ram
+      - RABBITMQ_VHOST=/
+      - RABBITMQ_LOAD_DEFINITIONS=no
 
 volumes:
   rabbitmq_data:
