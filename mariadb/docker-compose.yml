@@ -1,18 +1,9 @@
 version: "3.5"
 services:
   mariadb:
-    image: "bitnami/mariadb:10.5-debian-10"
+    image: "mariadb:10.5"
     ports:
       - "3306:3306"
-    deploy:
-      placement:
-        constraints:
-          - "node.role==manager"
-    healthcheck:
-      test: ["CMD", "/opt/bitnami/scripts/mariadb/healthcheck.sh"]
-      interval: 15s
-      timeout: 5s
-      retries: 6
     networks:
       - fotNet
     volumes:
@@ -21,9 +12,9 @@ services:
       - MARIADB_CHARACTER_SET=utf8mb4
       - MARIADB_COLLATE=utf8mb4_unicode_ci
       - MARIADB_ROOT_USER=root
-      - MARIADB_ROOT_PASSWORD=D3uAAwEyK4
-      - MARIADB_DATABASE=hicloud
-      - MARIADB_USER=m2r
+      - MARIADB_ROOT_PASSWORD=AyEB7kJjm4
+      - MARIADB_DATABASE=fotNet
+      - MARIADB_USER=fotnet_user
       - MARIADB_PASSWORD=AyEB7kJjm4
 
 volumes:
