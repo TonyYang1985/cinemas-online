@@ -1,2 +1,1 @@
-mariaDBUrl: mysql://fot:fot@db.sg.fot.cool:3306/fot_database
-output: ./example
+mariaDBUrl: "mysql://root:AyEB7kJjm4@127.0.0.1:3306/fotNet"
