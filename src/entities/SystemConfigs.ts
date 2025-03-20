@@ -1,6 +1,6 @@
 import { Column, Entity } from 'typeorm';
 
-@Entity('system_configs', { schema: 'vecandx' })
+@Entity('system_configs', { schema: 'fotNet' })
 export class SystemConfigs {
     @Column('varchar', { primary: true, name: 'id', length: 10 })
     id: string;

@@ -4,7 +4,7 @@ import { Service, Inject } from 'typedi';
 import { UserService } from '@footy/services';
 
 @Service()
-export class EmployeesWSController {
+export class EmployeesController {
   @Inject()
   private userService!: UserService;
 
