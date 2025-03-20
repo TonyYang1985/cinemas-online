@@ -1,3 +1,1 @@
 connection: amqp://admin:admin@127.0.0.1:5672/
-options:
-  heartbeat: 60

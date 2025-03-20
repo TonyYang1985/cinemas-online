@@ -12,7 +12,7 @@ export const redisLoader = (option: RedisLoaderOption) => (settings?: Microframe
   Container.set(RedisClient, redisClient);
   const { redis } = redisClient;
   settings?.onShutdown(async () => redis.disconnect());
-  Logger.getLogger(RedisClient).info(`🔗Redis connected.`);
+  Logger.getLogger('RedisLoader').info(`🔗Redis connected.`);
 
   return new Promise<void>((resolve) => {
     redis.once('connect', () => {

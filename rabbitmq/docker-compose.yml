@@ -2,7 +2,7 @@ version: "3.5"
 
 services:
   rabbitmq:
-    image: "bitnami/rabbitmq:3.11"
+    image: "rabbitmq:3.11-management"
     hostname: rabbitmq
     networks:
       - fotNet
@@ -10,19 +10,16 @@ services:
       - "5672:5672"
       - "15672:15672"
     volumes:
-      - "rabbitmq_data:/bitnami/rabbitmq/data"
+      - "rabbitmq_data:/var/lib/rabbitmq"
     deploy:
       restart_policy:
         condition: any
     environment:
-      - RABBITMQ_USERNAME=admin
-      - RABBITMQ_PASSWORD=admin
-      - RABBITMQ_PLUGINS=rabbitmq_management
-      - RABBITMQ_SECURE_PASSWORD=no
-      - RABBITMQ_ALLOW_EMPTY_PASSWORD=no
-      - RABBITMQ_NODE_TYPE=queue-ram
-      - RABBITMQ_VHOST=/
-      - RABBITMQ_LOAD_DEFINITIONS=no
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
+      - RABBITMQ_ERLANG_COOKIE=SWQOKODSQALRPCLNMEQG
+      - RABBITMQ_NODENAME=rabbit@rabbitmq
+      - RABBITMQ_CONFIG_FILE=/var/lib/rabbitmq/rabbitmq.conf
 
 volumes:
   rabbitmq_data:

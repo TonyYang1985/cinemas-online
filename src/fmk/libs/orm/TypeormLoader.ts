@@ -4,12 +4,12 @@ import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 import { initializeTransactionalContext, patchTypeORMRepositoryWithBaseRepository } from 'typeorm-transactional-cls-hooked';
 import { URL } from 'url';
-import { DatabaseConfig,ConfigManager } from '@footy/fmk/libs/configure';
+import { DatabaseConfig, ConfigManager } from '@footy/fmk/libs/configure';
 import { Logger } from '@footy/fmk/libs/logger';
 import { ClassType } from '@footy/fmk/libs/type';
 
-initializeTransactionalContext(); 
-patchTypeORMRepositoryWithBaseRepository(); 
+initializeTransactionalContext();
+patchTypeORMRepositoryWithBaseRepository();
 
 export type TypeormLoaderOption = {
   entities?: ClassType[];
@@ -34,14 +34,17 @@ export const typeormLoader = (option: TypeormLoaderOption) => (settings?: Microf
     },
   });
 
-  return dataSource.initialize().then((conn) => {
-    settings?.onShutdown(async () => await conn.destroy());
-    const logger = Logger.getLogger('TypeormLoader');
-    logger.info(`🔗Database connected to ${dbUrl.hostname}:${dbUrl.port}${dbUrl.pathname}. CPU: ${cpus().length}`);
-    return conn;
-  }).catch((error) => {
-    const logger = Logger.getLogger('TypeormLoader');
-    logger.error('Database connection error', error);
-    throw error;
-  });
+  return dataSource
+    .initialize()
+    .then((conn) => {
+      settings?.onShutdown(async () => await conn.destroy());
+      const logger = Logger.getLogger('TypeormLoader');
+      logger.info(`🔗Database connected to ${dbUrl.hostname}:${dbUrl.port}${dbUrl.pathname}. CPU: ${cpus().length}`);
+      return conn;
+    })
+    .catch((error) => {
+      const logger = Logger.getLogger('TypeormLoader');
+      logger.error('Database connection error', error);
+      throw error;
+    });
 };
