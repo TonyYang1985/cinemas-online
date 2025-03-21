@@ -3,7 +3,6 @@ import { Inject, Service } from 'typedi';
 import { SystemConfigsService } from '@footy/services';
 
 @JsonController('/configs')
-@Service()
 export class SystemConfigsController {
   private logger = Logger.getLogger(SystemConfigsController);
 

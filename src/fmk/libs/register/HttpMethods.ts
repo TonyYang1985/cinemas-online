@@ -18,7 +18,6 @@ const HttpMethod = (mName: string, method: (route: any) => any, route: string, a
             tempRegistry[DEFAULT_KEY][route] = [];
         }
         tempRegistry[DEFAULT_KEY][route].push({ app, functionName: functionName ?? 'internal', method: mName, _apiName: apiName });
-        Service()(target);
         method(route)(target, propertyKey, descriptor);
         console.log('route', route);
         console.log('decorator', target, propertyKey, descriptor);
@@ -54,8 +53,8 @@ export const JsonController = (baseRoute?: string) => {
         tempRegistry[DEFAULT_KEY] = {};
         console.log('baseRoute', baseRoute);
         console.log('target', target);
-        rc.JsonController(baseRoute)(target);
         Service()(target);
+        rc.JsonController(baseRoute)(target);
     };
 
     return decorator;
