@@ -1,6 +1,6 @@
-import { Get, JsonController, Logger, Post, Put, rest } from '@footy/fmk';
-import { Inject, Service } from 'typedi';
+import {  Get, JsonController, Logger } from '@footy/fmk';
 import { SystemConfigsService } from '@footy/services';
+import { Inject } from 'typedi';
 
 @JsonController('/configs')
 export class SystemConfigsController {
@@ -11,6 +11,6 @@ export class SystemConfigsController {
 
   @Get('/all', '*', 'cinemas-online.configs.get')
   async getAllConfigs() {
-    return this.systemConfigsService.getAllConfigs();
+    return await this.systemConfigsService.getConfigs();
   }
 }

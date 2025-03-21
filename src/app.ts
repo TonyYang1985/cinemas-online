@@ -10,7 +10,7 @@ bootstrap({
   wsControllers: Object.values(wsControllers),
   entities: Object.values(Entities),
   eventsHandlers: Object.values(Handlers),
-  synchronize:false
+  synchronize: false
 }).catch((e) => {
   console.error(e);
   process.exit(-1);

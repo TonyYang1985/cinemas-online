@@ -53,8 +53,8 @@ export const JsonController = (baseRoute?: string) => {
         tempRegistry[DEFAULT_KEY] = {};
         console.log('baseRoute', baseRoute);
         console.log('target', target);
-        Service()(target);
         rc.JsonController(baseRoute)(target);
+        Service()(target);
     };
 
     return decorator;

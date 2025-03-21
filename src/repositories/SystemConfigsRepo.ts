@@ -3,11 +3,12 @@ import { Service } from 'typedi';
 import { SystemConfigs } from '@footy/entities';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
+import { repo } from '@footy/fmk';
 
 @Service()
 export class SystemConfigsRepo {
     constructor(
-        @InjectRepository(SystemConfigs)
+        @repo.InjectRepository(SystemConfigs)
         private repository: Repository<SystemConfigs>
     ) {}
 
