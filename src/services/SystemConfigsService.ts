@@ -1,15 +1,13 @@
-import { Service } from 'typedi';
-import { SystemConfigs } from '@footy/entities';
-import { FindOptionsWhere, Repository } from 'typeorm';
-import { repo } from '@footy/fmk';
+import { Inject, Service } from 'typedi';
+import { SystemConfigsRepo } from '@footy/repositories';
 
 @Service()
 export class SystemConfigsService {
 
-  @repo.InjectRepository(SystemConfigs)
-  private repository: Repository<SystemConfigs>;
+  @Inject()
+  private systemConfigsRepo: SystemConfigsRepo;
 
   async getConfigs() {
-    return await this.repository.find({ select: ['configName', 'configValue', 'scope'], where: { enabled: 1 } });
+    return await this.systemConfigsRepo.find({ select: ['configName', 'configValue', 'scope'], where: { enabled: 1 } });
   }
 }
