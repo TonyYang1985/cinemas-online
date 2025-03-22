@@ -1,15 +1,15 @@
 import { Inject, Service } from 'typedi';
 import { onEvent } from '@footy/fmk';
-import { UserService } from '@footy/services';
+import { SystemConfigsService } from '@footy/services';
 
 @Service()
 export class TestEventHandler {
   @Inject()
-  userService: UserService;
+  configService: SystemConfigsService;
 
   @onEvent('test.example')
-  onTestEvent(param: unknown) {
-    console.log(param);
-    throw 'oh-my-god';
+  async onTestEvent(param: unknown) {
+    const all = await this.configService.getConfigs();
+    console.log(all);
   }
 }

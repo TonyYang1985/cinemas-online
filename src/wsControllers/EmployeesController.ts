@@ -1,12 +1,12 @@
+import { SystemConfigsService } from '@footy/services';
 import 'reflect-metadata';
 import { Socket, Server } from 'socket.io';
 import { Service, Inject } from 'typedi';
-import { UserService } from '@footy/services';
 
 @Service()
 export class EmployeesController {
   @Inject()
-  private userService!: UserService;
+  private configService!: SystemConfigsService;
 
   private namespace: string = '/employees';
 
@@ -16,8 +16,8 @@ export class EmployeesController {
 
   async handleConnection(socket: Socket, io: Server): Promise<void> {
     console.log('client connected');
-    const allUsers = await this.userService.getAllUsers();
-    socket.emit('all', allUsers);
+    const all = await this.configService.getConfigs();
+    socket.emit('all', all);
   }
 
   disconnect(socket: Socket): void {
@@ -27,8 +27,8 @@ export class EmployeesController {
   registerEvents(socket: Socket, io: Server): void {
     socket.on('load', async (email: string) => {
       try {
-        const user = await this.userService.getOne(email);
-        socket.emit('done', user);
+        const all = await this.configService.getConfigs();
+        socket.emit('done', all);
       } catch (error) {
         console.error('Error loading user:', error);
         socket.emit('error', { message: 'Failed to load user' });
