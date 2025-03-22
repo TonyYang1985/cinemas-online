@@ -1,5 +1,8 @@
 {
     "compilerOptions": {
+      "sourceMap": true,
+      "inlineSourceMap": false,
+      "inlineSources": false,
       "outDir": "temp",
       "target": "es2015",
       "module": "CommonJS",
@@ -16,7 +19,6 @@
         "esnext.asynciterable",
         "esnext.bigint"
       ],
-      "sourceMap": true,
       "removeComments": true,
       "moduleResolution": "node",
       "resolveJsonModule": true,
