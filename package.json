@@ -17,11 +17,11 @@
         "gen:idx:watch": "nodemon",
         "gen:db-schema": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register tools/DBSchemaGenerator.ts",
         "gen:db-repo": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register tools/RepositoryGenerator.ts",
-        "gen:db": "yarn gen:db-schema && yarn gen:db-repo && yarn gen:idx && yarn eslint",
+        "gen:db": "yarn gen:db-schema && yarn gen:db-repo && yarn gen:idx",
         "gen:keys": "openssl genrsa -out ./keys/privateKey.pem 2048 && openssl rsa -in ./keys/privateKey.pem -outform PEM -pubout -out ./keys/publicKey.pem",
         "precommit": "yarn lint",
         "lint": "tsc --noEmit && yarn eslint",
-        "gen:idx": "create-ts-index .",
+        "gen:idx": "cti create . --config cti.config.js",
         "eslint": "eslint '*/**/*.ts' --quiet --fix"
        
     },
