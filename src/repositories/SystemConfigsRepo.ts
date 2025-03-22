@@ -3,12 +3,11 @@ import { Service } from 'typedi';
 import { SystemConfigs } from '@footy/entities';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
-import { repo } from '@footy/fmk';
 
 @Service()
 export class SystemConfigsRepo {
     constructor(
-        @repo.InjectRepository(SystemConfigs)
+        @InjectRepository(SystemConfigs)
         private repository: Repository<SystemConfigs>
     ) {}
 
@@ -16,23 +15,23 @@ export class SystemConfigsRepo {
     findByName(name: string) {
         return this.repository.findOne({ where: { configName:name } });
     }
+
     async find(options?: any) {
         return this.repository.find(options);
     }
+
     async findOne(options?: any) {
         if (typeof options === 'object' && options.where) {
             return this.repository.findOne(options);
         }
         return this.repository.findOneBy(options as FindOptionsWhere<SystemConfigs>);
     }
+
     async save(entity: SystemConfigs | Partial<SystemConfigs>) {
         return this.repository.save(entity);
     }
+
     async insert(entity: SystemConfigs | Partial<SystemConfigs>) {
         return this.repository.insert(entity);
-    }
-    
-    async update(criteria: any, partialEntity: Partial<SystemConfigs>) {
-        return this.repository.update(criteria, partialEntity);
     }
 }

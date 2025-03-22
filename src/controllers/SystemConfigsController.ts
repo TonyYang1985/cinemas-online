@@ -1,6 +1,6 @@
-import {  Get, JsonController, Logger } from '@footy/fmk';
-import { SystemConfigsService } from '@footy/services';
+import { Get, JsonController, Logger } from '@footy/fmk';
 import { Inject } from 'typedi';
+import { SystemConfigsService } from '../services/SystemConfigsService';
 
 @JsonController('/configs')
 export class SystemConfigsController {

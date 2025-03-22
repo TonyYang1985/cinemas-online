@@ -1,6 +1,6 @@
 // { }
 import { Service } from 'typedi';
-import { {{toEntityName tscName}} } from '~/entities';
+import { {{toEntityName tscName}} } from '@footy/entities';
 import { Repository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
 

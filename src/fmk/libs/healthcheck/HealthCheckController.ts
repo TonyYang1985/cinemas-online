@@ -16,7 +16,7 @@ export class HealthCheckController {
   @Get('/_healthcheck')
   async healthCheck(@QueryParam('os') showOs: boolean) {
     try {
-     const dbAlive = await this.dataSource.query('select "true"');
+      const dbAlive = await this.dataSource.query('select "true"');
       if (showOs) {
         const osInfo = {
           hostname: os.hostname(),
