@@ -21,7 +21,7 @@
     "gen:keys": "openssl genrsa -out ./keys/privateKey.pem 2048 && openssl rsa -in ./keys/privateKey.pem -outform PEM -pubout -out ./keys/publicKey.pem",
     "precommit": "yarn lint",
     "lint": "tsc --noEmit && yarn eslint",
-    "gen:idx": "cti create . --config .ctirc",
+    "gen:idx": "ts-node -r tsconfig-paths/register tools/IndexesCreator.ts",
     "eslint": "eslint '*/**/*.ts' --quiet --fix"
   },
   "devDependencies": {

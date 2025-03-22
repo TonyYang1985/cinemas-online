@@ -11,7 +11,6 @@
     "fileExcludePatterns": [],
     "fileFirst": false,
     "globOptions": {
-      "cwd": "/Users/macbook/code/cinemas-online",
       "dot": true,
       "ignore": [
         "@types/**",
@@ -19,12 +18,10 @@
         "__test__/**",
         "__tests__/**",
         "node_modules/**",
-        "tools"
+        "tools/**"
       ],
       "nonull": true
     },
-    "includeCWD": false,
-    "output": "index.ts",
     "quote": "'",
     "targetExts": [
       "ts",
@@ -32,12 +29,9 @@
     ],
     "useSemicolon": true,
     "useTimestamp": false,
-    "verbose": false,
+    "verbose": true,
     "withoutBackupFile": true,
-    "backup": false,
-    "createBackup": false,
     "withoutComment": false,
-    "input": [
-        "./src/**/**"
-    ]
+    "includeCWD": true,
+    "output": "index.ts"
   }
