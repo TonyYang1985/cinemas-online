@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import pino from 'pino';
 import { ConfigManager } from '@footy/fmk/libs/configure';
@@ -40,17 +41,17 @@ export class Logger {
     if (newConfig.prettyPrint) {
       newConfig.transport = {
         target: 'pino-pretty',
-        options: {}
+        options: {},
       };
       if (typeof newConfig.prettyPrint === 'object') {
         newConfig.transport.options = {
           ...newConfig.prettyPrint,
-          colorize: newConfig.prettyPrint.colorize !== false
+          colorize: newConfig.prettyPrint.colorize !== false,
         };
       } else {
         newConfig.transport.options = {
           colorize: true,
-          translateTime: 'SYS:standard'
+          translateTime: 'SYS:standard',
         };
       }
       delete newConfig.prettyPrint;

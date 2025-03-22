@@ -9,22 +9,9 @@ const cfg = ConfigManager.getConfig<DatabaseConfig>('database');
 const db = new URL(cfg.mariaDBUrl);
 const argv = process.argv;
 const { hostname, pathname, port, username, password } = db;
-const configs: string[] = [
-  '-h', hostname, 
-  '-d', pathname.substr(1), 
-  '-p', port, 
-  '-u', username, 
-  '-x', password, 
-  '-e', 'mariadb', 
-  '-o', `${cfg.output || './src'}/entities`, 
-  '--noConfig', 
-  '--cf', 'pascal', 
-  '--ce', 'pascal', 
-  '--cp', 'camel', 
-  '--relationIds', 
-  '--generateConstructor'
-];
+const configs: string[] = ['-h', hostname, '-d', pathname.substr(1), '-p', port, '-u', username, '-x', password, '-e', 'mariadb', '-o', `${cfg.output || './src'}/entities`, '--noConfig', '--cf', 'pascal', '--ce', 'pascal', '--cp', 'camel', '--relationIds', '--generateConstructor'];
 configs.map((c) => argv.push(c));
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const fs = require('fs');
 const _writeFileSync = fs.writeFileSync;
 let generatedAmount = 0;
@@ -41,7 +28,7 @@ fs.writeFileSync = (...args: any) => {
     generatedAmount++;
   }
 };
-
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 require('typeorm-model-generator/dist/src');
 process.on('exit', () => {
   console.log(`Generated Entities: ${generatedAmount}`);

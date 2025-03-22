@@ -17,27 +17,27 @@ export function setupSocketControllers(io: SocketIO.Server, controllers: ClassTy
         controller = new controllerClass();
         Container.set(controllerClass, controller);
       }
-      
+
       let namespace = '/';
       if (typeof controller.getNamespace === 'function') {
         namespace = controller.getNamespace();
       } else if (controller.namespace) {
         namespace = controller.namespace;
       }
-      
+
       const nsp = namespace === '/' ? io : io.of(namespace);
-      
+
       nsp.on('connection', (socket) => {
         console.log(`Socket connected to ${namespace}: ${socket.id}`);
-        
+
         if (typeof controller.handleConnection === 'function') {
           controller.handleConnection(socket, nsp);
         }
-        
+
         if (typeof controller.registerEvents === 'function') {
           controller.registerEvents(socket, nsp);
         }
-        
+
         socket.on('disconnect', () => {
           if (typeof controller.handleDisconnection === 'function') {
             controller.handleDisconnection(socket);

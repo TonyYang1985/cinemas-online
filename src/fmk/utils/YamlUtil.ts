@@ -1,8 +1,9 @@
 import fs from 'fs';
 import glob from 'glob-promise';
 import yaml from 'js-yaml';
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const mergeJSON = require('merge-json');
 
-const mergeJSON = require('merge-json');  
 const configFiles: string[] = [];
 
 const find = (path: string): string | undefined => configFiles.find((f) => f === `${path}.yml`);

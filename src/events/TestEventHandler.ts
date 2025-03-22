@@ -4,12 +4,12 @@ import { UserService } from '@footy/services';
 
 @Service()
 export class TestEventHandler {
-    @Inject()
-    userService: UserService;
+  @Inject()
+  userService: UserService;
 
-    @onEvent('test.example')
-    onTestEvent(param: unknown) {
-        console.log(param);
-        throw 'oh-my-god';
-    }
+  @onEvent('test.example')
+  onTestEvent(param: unknown) {
+    console.log(param);
+    throw 'oh-my-god';
+  }
 }

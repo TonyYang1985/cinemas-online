@@ -1,8 +1,8 @@
 // {}
-import { Service } from "typedi";
-import { SystemConfigs } from "@footy/entities";
-import { DataSource } from "typeorm";
-import { BaseRepository } from "@footy/fmk";
+import { Service } from 'typedi';
+import { SystemConfigs } from '@footy/entities';
+import { DataSource } from 'typeorm';
+import { BaseRepository } from '@footy/fmk';
 
 @Service()
 export class SystemConfigsRepo extends BaseRepository<SystemConfigs> {

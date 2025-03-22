@@ -9,25 +9,11 @@ const cfg = ConfigManager.getConfig<DatabaseConfig>('database');
 const db = new URL(cfg.mariaDBUrl);
 const { hostname, pathname, port, username, password } = db;
 const argv = process.argv;
-const configs: string[] = [
-  '-h', hostname,
-  '-d', pathname.substr(1),
-  '-p', port,
-  '-u', username,
-  '-x', password,
-  '-e', 'mariadb',
-  '-o', `${cfg.output || './src'}/repositories`,
-  '--noConfig',
-  '--cf', 'pascal',
-  '--ce', 'pascal',
-  '--cp', 'camel',
-  '--relationIds',
-  '--generateConstructor'
-];
+const configs: string[] = ['-h', hostname, '-d', pathname.substr(1), '-p', port, '-u', username, '-x', password, '-e', 'mariadb', '-o', `${cfg.output || './src'}/repositories`, '--noConfig', '--cf', 'pascal', '--ce', 'pascal', '--cp', 'camel', '--relationIds', '--generateConstructor'];
 
 // '--active-record',
 configs.map((c) => argv.push(c));
-
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const path = require('path');
 const _pathResolver = path.resolve;
 path.resolve = (...args: any) => {
@@ -40,6 +26,7 @@ path.resolve = (...args: any) => {
   return isTarget ? _pathResolver(__dirname, 'repository.mst') : _pathResolver(...args);
 };
 
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const fs = require('fs');
 const _writeFileSync = fs.writeFileSync;
 let generatedAmount = 0;
@@ -48,7 +35,7 @@ let skippedAmount = 0;
 fs.writeFileSync = (...args: any) => {
   const p = args[0] as string;
   args[0] = p.substr(0, p.length - 3) + 'Repo.ts';
-  
+
   if (fs.existsSync(args[0])) {
     skippedAmount++;
   } else {
@@ -63,15 +50,14 @@ fs.writeFileSync = (...args: any) => {
         // Update the content to use the BaseRepository pattern
         const entityName = file;
         const updatedContent = content
-          .replace(/import \{ Repository \} from 'typeorm';/, 'import { DataSource } from \'typeorm\';')
-          .replace(/import \{ InjectRepository \} from 'typeorm-typedi-extensions';/, 'import { BaseRepository } from \'@footy/fmk\';')
+          .replace(/import \{ Repository \} from 'typeorm';/, "import { DataSource } from 'typeorm';")
+          .replace(/import \{ InjectRepository \} from 'typeorm-typedi-extensions';/, "import { BaseRepository } from '@footy/fmk';")
           .replace(/@Service\(\)\nexport class (\w+)Repo \{/, '@Service()\nexport class $1Repo extends BaseRepository<$1> {')
-          .replace(/constructor\(\n\s+@InjectRepository\(\w+\)\n\s+private repository: Repository<\w+>\n\s+\) \{\}/,
-                   'constructor(dataSource: DataSource) {\n        super(dataSource, ' + entityName + ');\n    }\n\n    //Pass-through methods to repository\n    async find(options?: any) {\n        return this.repository.find(options);\n    }');
-        
+          .replace(/constructor\(\n\s+@InjectRepository\(\w+\)\n\s+private repository: Repository<\w+>\n\s+\) \{\}/, 'constructor(dataSource: DataSource) {\n        super(dataSource, ' + entityName + ');\n    }\n\n    //Pass-through methods to repository\n    async find(options?: any) {\n        return this.repository.find(options);\n    }');
+
         args[1] = updatedContent;
       }
-      
+
       _writeFileSync(...args);
       console.log(`Repo ${args[0]} generated.`);
       generatedAmount++;
@@ -79,6 +65,7 @@ fs.writeFileSync = (...args: any) => {
   }
 };
 
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 require('typeorm-model-generator/dist/src');
 
 process.on('exit', () => {

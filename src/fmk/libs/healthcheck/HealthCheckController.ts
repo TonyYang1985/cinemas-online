@@ -9,7 +9,7 @@ import { getLocalIpAddress } from '@footy/fmk/libs/network';
 @Service()
 export class HealthCheckController {
   private logger = Logger.getLogger(HealthCheckController);
-  
+
   @Inject()
   private dataSource: DataSource;
 
@@ -40,9 +40,9 @@ export class HealthCheckController {
       };
     } catch (error: unknown) {
       this.logger.error('Health check failed', error);
-      return { 
-        healthy: false, 
-        error: error instanceof Error ? error.message : 'Unknown error' 
+      return {
+        healthy: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
       };
     }
   }

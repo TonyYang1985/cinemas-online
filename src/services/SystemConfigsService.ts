@@ -3,7 +3,6 @@ import { SystemConfigsRepo } from '@footy/repositories';
 
 @Service()
 export class SystemConfigsService {
-
   @Inject()
   private systemConfigsRepo: SystemConfigsRepo;
 

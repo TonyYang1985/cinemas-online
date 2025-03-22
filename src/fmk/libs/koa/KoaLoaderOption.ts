@@ -5,12 +5,12 @@ import { ClassType } from '@footy/fmk/libs/type';
 import _ from 'lodash';
 
 export interface KoaLoaderOption {
-    restfulControllers?: ClassType[];
-    wsControllers?: ClassType[];
-    authorizationChecker?: AuthorizationChecker;
-    currentUserChecker?: CurrentUserChecker;
-    use?: Application.Middleware[];
-    noListening?: boolean;
-  }
-  
-export const KoaHolder: { koa?: Koa } = {};  
+  restfulControllers?: ClassType[];
+  wsControllers?: ClassType[];
+  authorizationChecker?: AuthorizationChecker;
+  currentUserChecker?: CurrentUserChecker;
+  use?: Application.Middleware[];
+  noListening?: boolean;
+}
+
+export const KoaHolder: { koa?: Koa } = {};

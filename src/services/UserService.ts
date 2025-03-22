@@ -13,7 +13,7 @@ export class UserService {
   private users: User[] = [
     { id: '1', email: 'john@example.com', name: 'John Doe', department: 'Engineering' },
     { id: '2', email: 'jane@example.com', name: 'Jane Smith', department: 'Marketing' },
-    { id: '3', email: 'bob@example.com', name: 'Bob Johnson', department: 'Sales' }
+    { id: '3', email: 'bob@example.com', name: 'Bob Johnson', department: 'Sales' },
   ];
 
   async getAllUsers(): Promise<User[]> {
@@ -21,7 +21,7 @@ export class UserService {
   }
 
   async getOne(email: string): Promise<User | undefined> {
-    return this.users.find(user => user.email === email);
+    return this.users.find((user) => user.email === email);
   }
   async createUser(userData: Partial<User>): Promise<User> {
     if (!userData.email || !userData.name) {
@@ -32,7 +32,7 @@ export class UserService {
       id: Date.now().toString(),
       email: userData.email,
       name: userData.name,
-      department: userData.department
+      department: userData.department,
     };
 
     this.users.push(newUser);
@@ -41,7 +41,7 @@ export class UserService {
 
   async deleteUser(email: string): Promise<boolean> {
     const initialLength = this.users.length;
-    this.users = this.users.filter(user => user.email !== email);
+    this.users = this.users.filter((user) => user.email !== email);
     return this.users.length < initialLength;
   }
 }

@@ -1,6 +1,6 @@
 import { createHash, createHmac } from 'crypto';
 import { readFileSync } from 'fs';
-import { ApplicationConfig ,ConfigManager } from '@footy/fmk/libs/configure';
+import { ApplicationConfig, ConfigManager } from '@footy/fmk/libs/configure';
 
 interface KeyCache {
   privateKey?: string;
