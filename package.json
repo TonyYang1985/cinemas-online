@@ -15,14 +15,14 @@
     "ncc:run": "cross-env NODE_ENV=development ncc run ./src/app.ts",
     "buildNum": "yarn npe buildNumber $(yarn -s buildnumgen)",
     "gen:idx:watch": "nodemon",
-    "gen:db-schema": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register tools/DBSchemaGenerator.ts",
-    "gen:db-repo": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register tools/RepositoryGenerator.ts",
     "gen:db": "yarn gen:db-schema && yarn gen:db-repo && yarn gen:idx",
-    "gen:keys": "openssl genrsa -out ./keys/privateKey.pem 2048 && openssl rsa -in ./keys/privateKey.pem -outform PEM -pubout -out ./keys/publicKey.pem",
     "precommit": "yarn lint",
     "lint": "tsc --noEmit && yarn eslint",
-    "gen:idx": "ts-node -r tsconfig-paths/register tools/IndexesCreator.ts",
-    "eslint": "eslint '*/**/*.ts' --quiet --fix"
+    "eslint": "eslint '*/**/*.ts' --quiet --fix",
+    "gen:keys": "openssl genrsa -out ./keys/privateKey.pem 2048 && openssl rsa -in ./keys/privateKey.pem -outform PEM -pubout -out ./keys/publicKey.pem",
+    "gen:db-schema": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register tools/DBSchemaGenerator.ts",
+    "gen:db-repo": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register tools/RepositoryGenerator.ts",
+    "gen:idx": "ts-node -r tsconfig-paths/register tools/IndexesCreator.ts"
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",
@@ -82,7 +82,6 @@
     "glob-promise": "^6.0.5",
     "helmet": "^8.1.0",
     "husky": "^9.1.7",
-    "internal-ip": "^8.0.0",
     "ioredis": "^5.6.0",
     "js-yaml": "^4.1.0",
     "jsonata": "^2.0.6",

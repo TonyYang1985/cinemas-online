@@ -3,6 +3,7 @@ import { Inject, Service } from 'typedi';
 import { DataSource } from 'typeorm';
 import { Get, JsonController, QueryParam } from 'routing-controllers';
 import { Logger } from '@footy/fmk/libs/logger';
+import { getLocalIpAddress } from '@footy/fmk/libs/network';
 
 @JsonController()
 @Service()
@@ -16,8 +17,7 @@ export class HealthCheckController {
   async healthCheck(@QueryParam('os') showOs: boolean) {
     try {
       const dbAlive = await this.dataSource.query('select "true"');
-      const internalIp = await import('internal-ip');
-      const networks = await internalIp.internalIpV4();
+      const networks = await getLocalIpAddress();
       if (showOs) {
         const osInfo = {
           hostname: os.hostname(),
