@@ -38,14 +38,10 @@ export const typeormLoader = (option: TypeormLoaderOption) => (settings?: Microf
       queueLimit: 0,
     },
   });
-  (global as any).DataSourceManager = {
-    default: dataSource,
-  };
   
-  // Register DataSource in TypeDI container
-  Container.set(DataSource, dataSource);
-  Container.set('typeorm.connection', dataSource);
-  Container.set('typeorm.connection.default', dataSource);
+  // (global as any).DataSourceManager = {
+  //   default: dataSource,
+  // };
   
   return dataSource
     .initialize()
@@ -69,6 +65,10 @@ export const typeormLoader = (option: TypeormLoaderOption) => (settings?: Microf
         logger.info(`Repository for entity "${entityName}" registered in container`);
         logger.info(`Repository for repository "${repository.metadata.targetName}" registered in container`);
       });
+     // Register DataSource in TypeDI container
+  Container.set(DataSource, dataSource);
+  Container.set('typeorm.connection', dataSource);
+  Container.set('typeorm.connection.default', dataSource);
       logger.info(`🔗Database connected to ${dbUrl.hostname}:${dbUrl.port}${dbUrl.pathname}. CPU: ${cpus().length}`);
       return conn;
     })
