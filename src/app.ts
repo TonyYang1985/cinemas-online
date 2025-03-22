@@ -9,8 +9,7 @@ bootstrap({
   restfulControllers: [...Object.values(rsControllers), ApiRegisterController, HealthCheckController],
   wsControllers: Object.values(wsControllers),
   entities: Object.values(Entities),
-  eventsHandlers: Object.values(Handlers),
-  synchronize: false
+  eventsHandlers: Object.values(Handlers)
 }).catch((e) => {
   console.error(e);
   process.exit(-1);
