@@ -1,15 +1,19 @@
 // { }
 import { Service } from 'typedi';
 import { {{toEntityName tscName}} } from '@footy/entities';
-import { Repository } from 'typeorm';
-import { InjectRepository } from 'typeorm-typedi-extensions';
+import { DataSource } from 'typeorm';
+import { BaseRepository } from '@footy/fmk';
 
 @Service()
-export class {{toEntityName tscName}}Repo {
-    constructor(
-        @InjectRepository({{toEntityName tscName}})
-        private repository: Repository<{{toEntityName tscName}}>
-    ) {}
+export class {{toEntityName tscName}}Repo extends BaseRepository<{{toEntityName tscName}}> {
+    //Pass-through methods to repository
+    constructor(dataSource: DataSource) {
+        super(dataSource, {{toEntityName tscName}});
+    }
 
+    //Pass-through methods to repository
+    async find(options?: any) {
+        return this.repository.find(options);
+    }
     // Add your code here
 }

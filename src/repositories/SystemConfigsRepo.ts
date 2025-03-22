@@ -1,18 +1,19 @@
-// { }
-import { Service } from 'typedi';
-import { SystemConfigs } from '@footy/entities';
-import { DataSource} from 'typeorm';
-import { BaseRepository } from '@footy/fmk';
+// {}
+import { Service } from "typedi";
+import { SystemConfigs } from "@footy/entities";
+import { DataSource } from "typeorm";
+import { BaseRepository } from "@footy/fmk";
 
 @Service()
 export class SystemConfigsRepo extends BaseRepository<SystemConfigs> {
+  //Pass-through methods to repository
+  constructor(dataSource: DataSource) {
+    super(dataSource, SystemConfigs);
+  }
 
-    constructor(dataSource: DataSource) {
-        super(dataSource, SystemConfigs);
-      }
-    //Pass-through methods to repository
-    async find(options?: any) {
-        return this.repository.find(options);
-    }
-
+  //Pass-through methods to repository
+  async find(options?: any) {
+    return this.repository.find(options);
+  }
+  // Add your code here
 }

@@ -1,5 +1,4 @@
 import os from 'os';
-import { internalIpV4 } from 'internal-ip';
 import { Inject, Service } from 'typedi';
 import { DataSource } from 'typeorm';
 import { Get, JsonController, QueryParam } from 'routing-controllers';
@@ -17,6 +16,8 @@ export class HealthCheckController {
   async healthCheck(@QueryParam('os') showOs: boolean) {
     try {
       const dbAlive = await this.dataSource.query('select "true"');
+      const internalIp = await import('internal-ip');
+      const networks = await internalIp.internalIpV4();
       if (showOs) {
         const osInfo = {
           hostname: os.hostname(),
@@ -29,7 +30,7 @@ export class HealthCheckController {
           totalmem: os.totalmem(),
           freemem: os.freemem(),
           cpus: `${os.cpus()[0].model} x ${os.cpus().length}`,
-          networks: await internalIpV4(),
+          networks: networks,
         };
         return { healthy: true, dbAlive, osInfo };
       }
