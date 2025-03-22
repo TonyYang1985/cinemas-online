@@ -11,12 +11,12 @@ export class UserController {
 
   @Get('/:scope/:name', 'admin', 'config.mgmt')
   async getConfig(@rest.Param('scope') scope: string, @rest.Param('name') configName: string) {
-    return this.systemConfigsService.getConfig(scope, configName);
+    //return this.systemConfigsService.getConfig(scope, configName);
   }
 
   @Get('', 'admin', 'config.mgmt')
   async getAllConfigs() {
-    return this.systemConfigsService.getAllConfigs();
+    return this.systemConfigsService.getConfigs();
   }
 
   @Post('/:scope/:name', 'admin', 'config.mgmt')
