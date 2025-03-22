@@ -9,29 +9,26 @@ import logger from 'koa-logger';
 import _ from 'lodash';
 import { MicroframeworkSettings } from 'microframework';
 import 'reflect-metadata';
-import { Action, getMetadataArgsStorage, RoutingControllersOptions, useContainer as useContainerRC } from 'routing-controllers';
+import { getMetadataArgsStorage, RoutingControllersOptions, useContainer as useContainerRC } from 'routing-controllers';
 import { routingControllersToSpec } from 'routing-controllers-openapi';
 import SocketIO from 'socket.io';
 import { Container } from 'typedi';
-import { jwtUtil } from '@footy/fmk/utils';
 import { ApplicationConfig, ConfigManager } from '@footy/fmk/libs/configure';
 import { HealthCheckController } from '@footy/fmk/libs/healthcheck';
-import { KoaControllerReturnHandler } from './KoaControllerReturnHandler';
 import { KoaLoaderOption } from './KoaLoaderOption';
 import { KoaHolder } from './KoaLoaderOption';
-import { ClassType } from '@footy/fmk/libs/type';
 import { setupRestfulControllers } from './setupRestfulControllers';
 import { setupSocketControllers } from './setupSocketControllers';
 
 export const koaLoader = (option: KoaLoaderOption) => (options?: MicroframeworkSettings) => {
-  // 设置依赖注入容器
+  //  setting up dependency injection container
   useContainerRC(Container);
-  // 获取应用配置
+  //  getting application configuration
   const cfg = ConfigManager.getConfig<ApplicationConfig>('application');
-  // 创建Koa应用
+  //   creating Koa application
   const webapp = new Koa();
   KoaHolder.koa = webapp;
-  // 添加中间件
+  //  adding middleware
   webapp.use(cors());
   webapp.use(favicon('favicon.ico'));
   if (option.use) {
@@ -43,18 +40,18 @@ export const koaLoader = (option: KoaLoaderOption) => (options?: MicroframeworkS
     webapp.use(json());
   }
 
-  // 设置API路径
+  // setting up API path
   const svcPath = `/api/v${cfg.version}/${cfg.appName}`;
 
-  // 设置REST控制器
+  // setting up REST controllers
   if (option.restfulControllers) {
     console.log('\n✅ Setting up Restful controllers Start 🚀');
     setupRestfulControllers(webapp, option.restfulControllers, svcPath, option.authorizationChecker, option.currentUserChecker);
     console.log('✅ Setting up Restful controllers Done 🚀\n');
   }
-  // 创建HTTP服务器
+  // creating HTTP server
   const server = http.createServer(webapp.callback());
-  // 设置WebSocket控制器
+  //  setting up WebSocket controllers
   if (option.wsControllers) {
     console.log('✅ Setting up Socket.IO controllers Start 🚀');
     const io = new SocketIO.Server(server, { path: `${svcPath}/socket.io` });
@@ -63,7 +60,7 @@ export const koaLoader = (option: KoaLoaderOption) => (options?: MicroframeworkS
     console.log('✅ Setting up Socket.IO controllers Done 🚀\n');
   }
 
-  // 设置关闭钩子
+  // setting up shutdown hook
   options?.onShutdown(
     async () =>
       new Promise<void>((done) => {
@@ -74,7 +71,7 @@ export const koaLoader = (option: KoaLoaderOption) => (options?: MicroframeworkS
       }),
   );
 
-  // 生成OpenAPI文档
+  // setting up OpenAPI documentation
   const setupOpenAPI = () => {
     const storage = getMetadataArgsStorage();
     const schemas = validationMetadatasToSchemas({
@@ -87,7 +84,7 @@ export const koaLoader = (option: KoaLoaderOption) => (options?: MicroframeworkS
     if (!apiDoccfg.disabled) {
       const pkgVersion = ConfigManager.getPkgVersion();
 
-      // 构建Routing选项用于文档生成
+      // building Routing options for documentation generation
       const routingOptions: RoutingControllersOptions = {
         routePrefix: svcPath,
         controllers: option.restfulControllers || [],
@@ -152,10 +149,10 @@ export const koaLoader = (option: KoaLoaderOption) => (options?: MicroframeworkS
     }
   };
 
-  // 设置OpenAPI文档
+  // setting up OpenAPI documentation
   setupOpenAPI();
 
-  // 启动服务器（如果需要）
+  // starting server (if needed)
   if (!option.noListening) {
     return new Promise((resolve) => {
       server.listen(cfg.port, () => {

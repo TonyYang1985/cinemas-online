@@ -1,6 +1,6 @@
 import { Service } from 'typedi';
 
-// 用户接口
+// User interface
 interface User {
   id: string;
   email: string;

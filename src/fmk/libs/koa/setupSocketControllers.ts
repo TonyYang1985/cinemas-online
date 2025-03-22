@@ -3,9 +3,9 @@ import { Container } from 'typedi';
 import SocketIO from 'socket.io';
 
 /**
- * 设置Socket.IO控制器
- * @param io Socket.IO服务器实例
- * @param controllers 控制器类型数组
+ * Set up Socket.IO controllers
+ * @param io Socket.IO server instance
+ * @param controllers Controller class array
  */
 export function setupSocketControllers(io: SocketIO.Server, controllers: ClassType[]) {
   for (const controllerClass of controllers) {
@@ -46,7 +46,6 @@ export function setupSocketControllers(io: SocketIO.Server, controllers: ClassTy
           }
         });
       });
-      
       console.log(`Socket controller: ${controllerClass.name} , Namespace: ${namespace} Registered Done 🚀`);
     } catch (error) {
       console.error(`Error setting up Socket controller ${controllerClass.name}:`, error);

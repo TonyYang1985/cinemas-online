@@ -8,16 +8,16 @@ import { ConfigManager } from '@footy/fmk/libs/configure';
 import _ from 'lodash';
 
 /**
- * 设置 Restful Controllers
- * @param app Koa应用实例
- * @param controllers 控制器类型数组
- * @param routePrefix API路由前缀
- * @param authorizationChecker 授权检查函数
- * @param currentUserChecker 当前用户检查函数
- * @returns 配置好的Koa应用
+ * Setup Restful Controllers
+ * @param app  Koa application instance
+ * @param controllers  Controller type array
+ * @param routePrefix   API route prefix
+ * @param authorizationChecker   Authorization check function
+ * @param currentUserChecker   Current user check function
+ * @returns  Configured Koa application
  */
 export function setupRestfulControllers(app: Koa, controllers: ClassType[], routePrefix: string, authorizationChecker?: (action: Action, roles: string[]) => Promise<boolean> | boolean, currentUserChecker?: (action: Action) => Promise<any> | any): Koa {
-  // 准备配置选项
+  //  Prepare configuration options
   const useKoaServerOption: RoutingControllersOptions = {
     routePrefix,
     classTransformer: false,
@@ -42,14 +42,14 @@ export function setupRestfulControllers(app: Koa, controllers: ClassType[], rout
     middlewares: [KoaControllerReturnHandler],
   };
 
-  // 设置控制器
+  // Set controllers
   const allControllers = [...controllers];
   useKoaServerOption.controllers = allControllers;
-  // 设置授权检查
+  // Set authorization check
   if (authorizationChecker) {
     useKoaServerOption.authorizationChecker = authorizationChecker;
   }
-  // 设置当前用户检查
+  // Set current user check
   if (currentUserChecker) {
     useKoaServerOption.currentUserChecker = currentUserChecker;
   } else {
@@ -61,7 +61,7 @@ export function setupRestfulControllers(app: Koa, controllers: ClassType[], rout
     };
   }
 
-  // 注册控制器
+  // Register controllers
   for (const controllerClass of controllers) {
     try {
       let controller;
@@ -77,7 +77,7 @@ export function setupRestfulControllers(app: Koa, controllers: ClassType[], rout
     }
   }
 
-  // 使用 Koa 服务器
+  // Use Koa server
   useKoaServer(app, useKoaServerOption);
   return app;
 }
