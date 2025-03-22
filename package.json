@@ -8,21 +8,24 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon",
-    "dev:debug": "cross-env NODE_ENV=development nodemon --inspect",
-    "production": "cross-env ENABLE_API_GATEWAY=true API_GATEWAY_HOST_PORT=192.168.52.35:80 DOMAINS=foo.sg,*.foo.sg NODE_ENV=production tsc-watch --onSuccess \"node -r tsconfig-paths/register -r source-map-support/register ./temp/example/app.js\"",
-    "ncc:build": "ncc build ./src/app.ts -m -o ./dist/single -e sqlite3 --no-source-map-register && ncc cache clean",
-    "ncc:run": "cross-env NODE_ENV=development ncc run ./src/app.ts",
-    "buildNum": "yarn json -I -f package.json -e \"this.buildNumber=$(yarn -s buildnumgen)\"",
-    "gen:idx:watch": "nodemon",
-    "gen:db": "yarn gen:db-schema && yarn gen:db-repo && yarn gen:idx && yarn eslint",
-    "precommit": "yarn lint",
-    "lint": "tsc --noEmit && yarn eslint",
-    "eslint": "eslint '*/**/*.ts' --quiet --fix",
-    "gen:keys": "openssl genrsa -out ./keys/privateKey.pem 2048 && openssl rsa -in ./keys/privateKey.pem -outform PEM -pubout -out ./keys/publicKey.pem",
-    "gen:db-schema": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register tools/DBSchemaGenerator.ts",
-    "gen:db-repo": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register tools/RepositoryGenerator.ts",
-    "gen:idx": "ts-node -r tsconfig-paths/register tools/IndexesCreator.ts"
+    "start:dev": "cross-env NODE_ENV=development nodemon",
+    "start:dev:debug": "cross-env NODE_ENV=development nodemon --inspect",
+    "start:prod": "cross-env ENABLE_API_GATEWAY=true API_GATEWAY_HOST_PORT=192.168.52.35:80 DOMAINS=foo.sg,*.foo.sg NODE_ENV=production tsc-watch --onSuccess \"node -r tsconfig-paths/register -r source-map-support/register ./temp/example/app.js\"",
+    
+    "build:single": "ncc build ./src/app.ts -m -o ./dist/single -e sqlite3 --no-source-map-register && ncc cache clean",
+    "build:run": "cross-env NODE_ENV=development ncc run ./src/app.ts",
+    "build:number": "yarn json -I -f package.json -e \"this.buildNumber=$(yarn -s buildnumgen)\"",
+    
+    "generate:indexes:watch": "nodemon",
+    "generate:database": "yarn generate:db-schema && yarn generate:db-repo && yarn generate:indexes && yarn lint:fix",
+    "generate:db-schema": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register tools/DBSchemaGenerator.ts",
+    "generate:db-repo": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register tools/RepositoryGenerator.ts",
+    "generate:indexes": "ts-node -r tsconfig-paths/register tools/IndexesCreator.ts",
+    "generate:keys": "openssl genrsa -out ./keys/privateKey.pem 2048 && openssl rsa -in ./keys/privateKey.pem -outform PEM -pubout -out ./keys/publicKey.pem",
+    
+    "lint": "tsc --noEmit && yarn lint:fix",
+    "lint:fix": "eslint '*/**/*.ts' --quiet --fix",
+    "precommit": "yarn lint"
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",
