@@ -4,3 +4,4 @@ export * from './SystemConfigsRepo';
 export * from './MoviesRepo';
 export * from './BookingsRepo';
 export * from './SeatsRepo';
+export * from './SeatSelectionRulesRepo';
