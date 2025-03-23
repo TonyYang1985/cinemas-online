@@ -2,9 +2,9 @@ import { Get, JsonController, Logger, Post, Put, Delete } from '@footy/fmk';
 import { Inject } from 'typedi';
 import { Seats, Bookings } from '@footy/entities';
 import { BookingsService } from '@footy/services';
-import { Body, Param } from 'routing-controllers';
 import { CreateBookingRequest, UpdateBookingRequest } from '@footy/vo';
 import { CreateBookingResponse } from '@footy/vo/response';
+import { Body, Param } from 'routing-controllers';
 
 @JsonController('/bookings')
 export class BookingsController {

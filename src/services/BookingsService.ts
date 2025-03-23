@@ -1,11 +1,10 @@
-// {}
 import { Inject, Service } from 'typedi';
 import { BookingsRepo, SeatsRepo, MoviesRepo } from '@footy/repositories';
 import { Seats, Bookings } from '@footy/entities';
 import { CreateBookingRequest, UpdateBookingRequest } from '@footy/vo';
 import { id as generateId } from '@footy/fmk/libs/generator';
 import { CreateBookingResponse } from '@footy/vo/response';
-import { SeatSelectionService, SeatPosition } from '../services/SeatSelectionService';
+import { SeatSelectionService } from '@footy/services';
 
 @Service()
 export class BookingsService {
@@ -75,7 +74,7 @@ export class BookingsService {
       if (request.seats.length !== request.booking.numTickets) {
         return CreateBookingResponse.error('ERROR_CODE2', 'number of tickets does not match number of seats');
       }
-      
+
       // Create the seats as specified by the user
       const seatsList: Partial<Seats>[] = request.seats.map((seat) => ({
         id: generateId(16),
@@ -87,11 +86,13 @@ export class BookingsService {
     } else {
       // Auto-allocate seats based on rules
       try {
-        const startingPosition = request.startingPosition ? {
-          rowLetter: request.startingPosition.rowLetter,
-          seatNumber: request.startingPosition.seatNumber,
-        } : undefined;
-        
+        const startingPosition = request.startingPosition
+          ? {
+              rowLetter: request.startingPosition.rowLetter,
+              seatNumber: request.startingPosition.seatNumber,
+            }
+          : undefined;
+
         seats = await this.seatSelectionService.allocateSeats(booking.id, {
           movieId: request.booking.movieId,
           numTickets: request.booking.numTickets,
@@ -111,7 +112,7 @@ export class BookingsService {
       rowLetter: seat.rowLetter,
       seatNumber: seat.seatNumber,
     }));
-    
+
     return CreateBookingResponse.success(booking.id, bookingCode, request.booking.movieId, request.booking.numTickets, seatsList);
   }
 
@@ -123,12 +124,12 @@ export class BookingsService {
 
     // Update booking
     await this.bookingsRepo.updateBooking(id, request);
-    
+
     // Handle seat updates
     if (request.updateSeats) {
       // Delete existing seats
       await this.seatsRepo.deleteByBookingId(id);
-      
+
       // Allocate new seats
       if (request.seats && request.seats.length > 0) {
         // User has specified seats
@@ -146,13 +147,15 @@ export class BookingsService {
         if (!movie) {
           return null;
         }
-        
+
         const numTickets = request.bookingData?.numTickets || booking.numTickets;
-        const startingPosition = request.startingPosition ? {
-          rowLetter: request.startingPosition.rowLetter,
-          seatNumber: request.startingPosition.seatNumber,
-        } : undefined;
-        
+        const startingPosition = request.startingPosition
+          ? {
+              rowLetter: request.startingPosition.rowLetter,
+              seatNumber: request.startingPosition.seatNumber,
+            }
+          : undefined;
+
         try {
           await this.seatSelectionService.allocateSeats(id, {
             movieId: booking.movieId,
@@ -165,7 +168,7 @@ export class BookingsService {
         }
       }
     }
-    
+
     // Return updated booking with seats
     return this.bookingsRepo.findByIdWithSeats(id);
   }
