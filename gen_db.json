@@ -1,3 +1,6 @@
 [
-  "system_configs"
+  "system_configs",
+  "movies",
+  "bookings",
+  "seats"
 ]

@@ -3,7 +3,7 @@ import EventEmitter from 'eventemitter3';
 import Redis from 'ioredis';
 import { Service } from 'typedi';
 import { ApplicationConfig, ConfigManager } from '@footy/fmk/libs/configure';
-import { id } from '@footy/fmk/libs/generator';
+import { id as generateId } from '@footy/fmk/libs/generator';
 import { Logger } from '@footy/fmk/libs/logger';
 import { RedisClient } from '@footy/fmk/libs/redis';
 import { LeaderOptions } from './LeaderOptions';
@@ -44,7 +44,7 @@ export const LeaderEvents = {
 export class Leader extends EventEmitter {
   logger = Logger.getLogger(Leader);
 
-  readonly id = id(16);
+  readonly id = generateId(16);
 
   readonly redis: Redis;
 

@@ -16,3 +16,4 @@ export * from './rabbitmq';
 export * from './redis';
 export * from './register';
 export * from './type';
+export * from './validator';
