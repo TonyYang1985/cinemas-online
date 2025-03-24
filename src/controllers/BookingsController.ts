@@ -1,8 +1,8 @@
-import { Get, JsonController, Logger, Post, Put, Delete } from '@footy/fmk';
+import { Get, JsonController, Logger, Post, Put, Delete, ct, rest } from '@footy/fmk';
 import { Inject } from 'typedi';
 import { Seats, Bookings } from '@footy/entities';
-import { BookingsService } from '@footy/services';
-import { CreateBookingRequest, UpdateBookingRequest } from '@footy/vo';
+import { BookingsService } from '@footy/services/BookingsService';
+import { CreateBookingRequest, UpdateBookingRequest, UpdateBookingSeatsRequest } from '@footy/vo';
 import { CreateBookingResponse } from '@footy/vo/response';
 import { Body, Param } from 'routing-controllers';
 
@@ -12,16 +12,6 @@ export class BookingsController {
 
   @Inject()
   private bookingsService: BookingsService;
-
-  @Get('', '*', 'cinemas-online.bookings.getAll')
-  async getAllBookings(): Promise<Bookings[]> {
-    return this.bookingsService.findAll();
-  }
-
-  @Get('/with-seats', '*', 'cinemas-online.bookings.getAllWithSeats')
-  async getAllBookingsWithSeats(): Promise<Bookings[]> {
-    return this.bookingsService.findAllWithSeats();
-  }
 
   @Get('/:id', '*', 'cinemas-online.bookings.getById')
   async getBookingById(@Param('id') id: string): Promise<Bookings | null> {
@@ -54,17 +44,19 @@ export class BookingsController {
   }
 
   @Post('', '*', 'cinemas-online.bookings.create')
-  async createBooking(@Body() request: CreateBookingRequest): Promise<CreateBookingResponse> {
+  async createBooking(@rest.Body() request: CreateBookingRequest): Promise<CreateBookingResponse> {
     return this.bookingsService.createBooking(request);
+  }
+
+  @Put('/:id/seats', '*', 'cinemas-online.bookings.updateSeats')
+  async updateBookingSeats(@Param('id') id: string, @Body() request: UpdateBookingSeatsRequest): Promise<CreateBookingResponse> {
+    // 确保请求中包含bookingId
+    request.bookingId = id;
+    return this.bookingsService.updateBookingSeats(request);
   }
 
   @Put('/:id', '*', 'cinemas-online.bookings.update')
   async updateBooking(@Param('id') id: string, @Body() request: UpdateBookingRequest): Promise<Bookings | null> {
     return this.bookingsService.updateBooking(id, request);
-  }
-
-  @Delete('/:id', '*', 'cinemas-online.bookings.delete')
-  async deleteBooking(@Param('id') id: string): Promise<void> {
-    await this.bookingsService.deleteBooking(id);
   }
 }

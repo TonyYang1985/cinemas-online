@@ -34,6 +34,7 @@ const transformer = (errors: ValidationError[]) => {
 @Middleware({ type: 'before' })
 export class KoaControllerReturnHandler implements KoaMiddlewareInterface {
   private logger = Logger.getLogger(KoaControllerReturnHandler);
+
   use(ctx: Context, next: (err?: any) => Promise<any>): Promise<any> {
     return next()
       .then(() => {

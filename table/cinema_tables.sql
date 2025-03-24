@@ -32,3 +32,18 @@ CREATE TABLE IF NOT EXISTS `seats` (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+-- fotNet.seat_selection_rules definition
+
+CREATE TABLE `seat_selection_rules` (
+  `id` varchar(36) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` varchar(1000) DEFAULT NULL,
+  `start_from_furthest_row` tinyint(4) NOT NULL DEFAULT 1,
+  `start_from_middle_col` tinyint(4) NOT NULL DEFAULT 1,
+  `overflow_to_closer_row` tinyint(4) NOT NULL DEFAULT 1,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

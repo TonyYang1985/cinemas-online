@@ -53,4 +53,12 @@ export class BookingsRepo extends BaseRepository<Bookings> {
     const result = await this.repository.delete(id);
     return result.affected ? result.affected > 0 : false;
   }
+
+  /**
+   * Get the total count of bookings
+   * @returns The number of bookings in the database
+   */
+  async getBookingCount(): Promise<number> {
+    return this.repository.count();
+  }
 }

@@ -1,17 +1,18 @@
 import { Expose } from 'class-transformer';
 import { IsArray, IsBoolean, IsNumber, IsOptional, Length, Matches, Max, Min } from 'class-validator';
 import { i18n } from '@footy/fmk/libs/validator';
+import { ct, cv } from '@footy/fmk';
 
-@Expose()
+@ct.Expose()
 export class CreateBookingVo {
   @i18n(Length, 1, 36)
-  @Expose()
+  @ct.Expose()
   movieId: string;
 
   @i18n(IsNumber)
   @i18n(Min, 1)
   @i18n(Max, 50)
-  @Expose()
+  @ct.Expose()
   numTickets: number;
 }
 
@@ -43,19 +44,35 @@ export class SeatPositionVo {
   seatNumber: number;
 }
 
-@Expose()
+@ct.Expose()
 export class CreateBookingRequest {
-  @Expose()
-  booking: CreateBookingVo;
+  @i18n(Length, 1, 36)
+  @ct.Expose()
+  movieId: string;
 
-  @i18n(IsArray)
-  @i18n(IsOptional)
-  @Expose()
-  seats: CreateBookingSeatsVo[];
+  @i18n(cv.IsNumber)
+  @i18n(cv.Min, 1)
+  @i18n(cv.Max, 50)
+  @ct.Expose()
+  numTickets: number;
+}
 
-  @i18n(IsOptional)
+@Expose()
+export class UpdateBookingSeatsRequest {
+  @i18n(Length, 1, 36)
   @Expose()
-  startingPosition?: SeatPositionVo;
+  bookingId: string;
+
+  @i18n(Length, 1, 1)
+  @i18n(Matches, /^[A-Za-z]$/)
+  @Expose()
+  rowLetter: string;
+
+  @i18n(IsNumber)
+  @i18n(Min, 1)
+  @i18n(Max, 50)
+  @Expose()
+  seatNumber: number;
 }
 
 @Expose()

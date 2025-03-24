@@ -20,7 +20,7 @@ export function setupRestfulControllers(app: Koa, controllers: ClassType[], rout
   //  Prepare configuration options
   const useKoaServerOption: RoutingControllersOptions = {
     routePrefix,
-    classTransformer: false,
+    classTransformer: true,
     defaults: {
       nullResultCode: 404,
       undefinedResultCode: 204,
@@ -32,6 +32,9 @@ export function setupRestfulControllers(app: Koa, controllers: ClassType[], rout
       excludeExtraneousValues: false,
     },
     validation: {
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      forbidUnknownValues: true,
       validationError: {
         target: false,
         value: false,

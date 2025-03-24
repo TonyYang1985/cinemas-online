@@ -130,17 +130,26 @@ export class SeatSelectionService {
       const rowSeats = availableSeats.get(rowLetter);
       if (!rowSeats || rowSeats.size === 0) continue;
 
-      // Get middle-most seats
-      const seatNumbers = Array.from(rowSeats).sort((a, b) => a - b);
-      const middleIndex = Math.floor(movie.seatsPerRow / 2);
+      // Get available seat numbers in this row
+      const availableSeatNumbers = Array.from(rowSeats).sort((a, b) => a - b);
 
-      // Sort seats by distance from middle
-      const sortedByMiddle = seatNumbers.sort((a, b) => {
-        return Math.abs(a - middleIndex) - Math.abs(b - middleIndex);
-      });
+      // If we can't fit all remaining tickets in this row, try to allocate as many as possible
+      const seatsNeeded = numTickets - selectedSeats.length;
+      if (seatsNeeded <= 0) break;
 
-      // Allocate as many seats as possible in this row
-      for (const seatNumber of sortedByMiddle) {
+      // Find the middle-most starting position
+      const middlePosition = Math.ceil(movie.seatsPerRow / 2);
+
+      // Sort seats by their distance from the middle position
+      // This ensures we start from the middle and expand outward
+      const sortedByMiddle = [...availableSeatNumbers].sort((a, b) => Math.abs(a - middlePosition) - Math.abs(b - middlePosition));
+
+      // Take as many consecutive seats as possible starting from the middle
+      // We need to find the best consecutive sequence
+      const bestSequence = this.findBestConsecutiveSequence(availableSeatNumbers, Math.min(seatsNeeded, availableSeatNumbers.length), middlePosition);
+
+      // Add the selected seats to our result
+      for (const seatNumber of bestSequence) {
         selectedSeats.push({ rowLetter, seatNumber });
 
         if (selectedSeats.length === numTickets) {
@@ -150,6 +159,52 @@ export class SeatSelectionService {
     }
 
     return selectedSeats;
+  }
+
+  /**
+   * Find the best consecutive sequence of seats closest to the middle
+   * @param availableSeats Available seat numbers in sorted order
+   * @param seatsNeeded Number of seats needed
+   * @param middlePosition The middle position to start from
+   * @returns The best consecutive sequence of seats
+   */
+  private findBestConsecutiveSequence(availableSeats: number[], seatsNeeded: number, middlePosition: number): number[] {
+    // If we need more seats than available, return all available
+    if (seatsNeeded >= availableSeats.length) {
+      return availableSeats;
+    }
+
+    // Find all possible consecutive sequences
+    const sequences: number[][] = [];
+
+    for (let i = 0; i <= availableSeats.length - seatsNeeded; i++) {
+      // Check if this is a consecutive sequence
+      let isConsecutive = true;
+      for (let j = 0; j < seatsNeeded - 1; j++) {
+        if (availableSeats[i + j + 1] !== availableSeats[i + j] + 1) {
+          isConsecutive = false;
+          break;
+        }
+      }
+
+      if (isConsecutive) {
+        sequences.push(availableSeats.slice(i, i + seatsNeeded));
+      }
+    }
+
+    // If no consecutive sequences found, just take the first available seats
+    if (sequences.length === 0) {
+      return availableSeats.slice(0, seatsNeeded);
+    }
+
+    // Find the sequence closest to the middle
+    return sequences.sort((a, b) => {
+      // Calculate distance of sequence midpoint from the middle position
+      const midpointA = (a[0] + a[a.length - 1]) / 2;
+      const midpointB = (b[0] + b[b.length - 1]) / 2;
+
+      return Math.abs(midpointA - middlePosition) - Math.abs(midpointB - middlePosition);
+    })[0];
   }
 
   /**
