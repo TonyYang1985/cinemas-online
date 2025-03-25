@@ -82,37 +82,28 @@ export class BookingsService {
     });
 
     // Use seat selection service to allocate seats
-    //let seats: Seats[] = [];
+    let seats: Seats[] = [];
 
-    // try {
-    //   // Allocate seats based on rules (with optional starting position)
-    //   let startingPosition;
-    //   if (request.rowLetter && request.seatNumber) {
-    //     startingPosition = {
-    //       rowLetter: request.rowLetter,
-    //       seatNumber: request.seatNumber,
-    //     };
-    //   }
-
-    //   seats = await this.seatSelectionService.allocateSeats(booking.id, {
-    //     movieId: request.movieId,
-    //     numTickets: request.numTickets,
-    //     startingPosition,
-    //   });
-    // } catch (error) {
-    //   // If seat allocation fails, delete the booking and return error
-    //   await this.bookingsRepo.deleteBooking(booking.id);
-    //   return CreateBookingResponse.error('ERROR_CODE3', 'failed to allocate seats');
-    // }
+    try {
+      // Allocate seats based on default rules
+      seats = await this.seatSelectionService.allocateSeats(booking.id, {
+        movieId: request.movieId,
+        numTickets: request.numTickets,
+      });
+    } catch (error) {
+      // If seat allocation fails, delete the booking and return error
+      await this.bookingsRepo.deleteBooking(booking.id);
+      return CreateBookingResponse.error('ERROR_CODE3', 'failed to allocate seats');
+    }
 
     // Return the booking with seats
-    // const seatsList = seats.map((seat) => ({
-    //   id: seat.id,
-    //   bookingId: seat.bookingId,
-    //   rowLetter: seat.rowLetter,
-    //   seatNumber: seat.seatNumber,
-    // }));
-    return CreateBookingResponse.success(booking.id, bookingCode, request.movieId, request.numTickets, []);
+    const seatsList = seats.map((seat) => ({
+      id: seat.id,
+      bookingId: seat.bookingId,
+      rowLetter: seat.rowLetter,
+      seatNumber: seat.seatNumber,
+    }));
+    return CreateBookingResponse.success(booking.id, bookingCode, request.movieId, request.numTickets, seatsList);
   }
 
   /**

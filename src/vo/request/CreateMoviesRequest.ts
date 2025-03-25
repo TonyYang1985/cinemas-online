@@ -1,6 +1,6 @@
 import { i18n } from '@footy/fmk/libs/validator';
 import { Expose } from 'class-transformer';
-import { IsNumber, IsString, Length, Max, Min } from 'class-validator';
+import { IsIn, isIn, IsNumber, IsOptional, IsString, Length, Max, Min } from 'class-validator';
 
 @Expose()
 export class CreateMoviesRequest {
@@ -20,6 +20,12 @@ export class CreateMoviesRequest {
   @i18n(Max, 50)
   @Expose()
   seatsPerRow: number;
+
+  @i18n(IsString)
+  @i18n(IsIn, ['asc', 'desc'])
+  @i18n(IsOptional)
+  @Expose()
+  sort: string;
 }
 
 export class UpdateMoviesRequest {

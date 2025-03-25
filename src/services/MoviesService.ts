@@ -4,11 +4,18 @@ import { MoviesRepo } from '@footy/repositories';
 import { Movies } from '@footy/entities';
 import { CreateMoviesRequest, UpdateMoviesRequest } from '@footy/vo';
 import { id as generateId } from '@footy/fmk/libs/generator';
+import { SeatSelectionService } from '@footy/services/SeatSelectionService';
+import { Logger } from '@footy/fmk';
 
 @Service()
 export class MoviesService {
+  private logger = Logger.getLogger(MoviesService);
+
   @Inject()
   private moviesRepo: MoviesRepo;
+
+  @Inject()
+  private seatSelectionService: SeatSelectionService;
 
   async findById(id: string): Promise<Movies | null> {
     return this.moviesRepo.findById(id);
@@ -23,12 +30,25 @@ export class MoviesService {
   }
 
   async createMovie(request: CreateMoviesRequest): Promise<Movies> {
-    console.log('Creating movie:', request);
+    this.logger.info('Creating movie:', request);
     const movie = {
       id: generateId(16),
       ...request,
     };
-    return this.moviesRepo.createMovie(movie);
+
+    // Create the movie
+    const createdMovie = await this.moviesRepo.createMovie(movie);
+
+    try {
+      // Initialize default seat selection rules
+      await this.seatSelectionService.initializeDefaultRules();
+      this.logger.info(`Default seat selection rules initialized for movie: ${createdMovie.id}`);
+    } catch (error) {
+      this.logger.error('Failed to initialize default seat selection rules:', error);
+      // We don't fail the movie creation if rules initialization fails
+    }
+
+    return createdMovie;
   }
 
   async updateMovie(id: string, request: UpdateMoviesRequest): Promise<Movies | null> {

@@ -15,6 +15,9 @@ export class Movies {
   @Column('int', { name: 'seats_per_row' })
   seatsPerRow: number;
 
+  @Column('varchar', { name: 'sort', length: 15 })
+  sort: string;
+
   @Column('timestamp', { name: 'created_at', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
