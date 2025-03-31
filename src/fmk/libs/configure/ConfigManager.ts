@@ -4,20 +4,27 @@ export type ConfigMap = { [key: string]: unknown };
 
 export class ConfigManager {
   private _config: ConfigMap = {};
+
   static readonly nodeEnv = process.env.NODE_ENV;
+
   private static instance = new ConfigManager();
+
   public static basePath = '';
+
   private constructor() {}
 
   get config(): ConfigMap {
     return this._config;
   }
+
   static isDevelopment(): boolean {
     return ConfigManager.nodeEnv === 'development';
   }
+
   static isProduction(): boolean {
     return ConfigManager.nodeEnv === 'production';
   }
+
   load(...files: string[]): void {
     files.forEach((f) => {
       if (!this._config[f]) {
