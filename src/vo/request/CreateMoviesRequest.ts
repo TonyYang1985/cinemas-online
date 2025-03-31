@@ -25,7 +25,7 @@ export class CreateMoviesRequest {
   @i18n(IsOptional)
   @i18n(IsString)
   @Expose()
-  sort: string;
+  sort: string = 'desc';
 }
 
 export class UpdateMoviesRequest {

@@ -27,6 +27,7 @@ export function setupRestfulControllers(app: Koa, controllers: ClassType[], rout
     },
     plainToClassTransformOptions: {
       excludeExtraneousValues: true,
+      exposeDefaultValues: true,
     },
     classToPlainTransformOptions: {
       excludeExtraneousValues: false,
