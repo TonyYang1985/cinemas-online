@@ -38,7 +38,7 @@ export class HealthCheckController {
         healthy: true,
         dbAlive,
       };
-    } catch (error: unknown) {
+    } catch (error: any) {
       this.logger.error('Health check failed', error);
       return {
         healthy: false,
