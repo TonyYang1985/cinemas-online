@@ -2,10 +2,10 @@ import { Inject, Service } from 'typedi';
 import { BookingsRepo, SeatsRepo, MoviesRepo } from '@footy/repositories';
 import { Seats, Bookings } from '@footy/entities';
 import { CreateBookingRequest, UpdateBookingRequest, UpdateBookingSeatsRequest } from '@footy/vo';
-import { id as generateId } from '@footy/fmk/libs/generator';
+import { id as generateId } from '@gaias/basenode';
 import { CreateBookingResponse } from '@footy/vo/response';
 import { SeatSelectionService } from '@footy/services/SeatSelectionService';
-import { Logger } from '@footy/fmk';
+import { Logger } from '@gaias/basenode';
 
 @Service()
 export class BookingsService {
@@ -199,7 +199,7 @@ export class BookingsService {
             numTickets,
             startingPosition,
           });
-        } catch (error) {
+        } catch (error:any) {
           // If seat allocation fails, log error but don't fail the update
           this.logger.error('Failed to allocate seats', error);
         }

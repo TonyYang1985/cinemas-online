@@ -1,7 +1,7 @@
 // {}
 import { Service } from 'typedi';
 import { DataSource } from 'typeorm';
-import { BaseRepository } from '@footy/fmk';
+import { BaseRepository } from '@gaias/basenode';
 import { SeatSelectionRules } from '@footy/entities';
 
 @Service()

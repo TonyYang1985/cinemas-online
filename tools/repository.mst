@@ -2,7 +2,7 @@
 import { Service } from 'typedi';
 import { {{toEntityName tscName}} } from '@footy/entities';
 import { DataSource } from 'typeorm';
-import { BaseRepository } from '@footy/fmk';
+import { BaseRepository } from '@gaias/basenode';
 
 @Service()
 export class {{toEntityName tscName}}Repo extends BaseRepository<{{toEntityName tscName}}> {

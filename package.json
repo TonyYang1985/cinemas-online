@@ -64,6 +64,7 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
+    "@gaias/basenode": "^1.0.11",
     "@koa/cors": "^5.0.0",
     "@koa/multer": "^4.0.0",
     "@types/amqplib": "^0.10.7",

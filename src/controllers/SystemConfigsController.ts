@@ -1,4 +1,4 @@
-import { Get, JsonController, Logger } from '@footy/fmk';
+import { Get, JsonController, Logger } from '@gaias/basenode';
 import { Inject } from 'typedi';
 import { SystemConfigsService } from '../services/SystemConfigsService';
 

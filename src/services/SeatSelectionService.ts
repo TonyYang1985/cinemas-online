@@ -2,8 +2,8 @@
 import { Inject, Service } from 'typedi';
 import { MoviesRepo, SeatsRepo, SeatSelectionRulesRepo } from '@footy/repositories';
 import { Seats, Movies, SeatSelectionRules } from '@footy/entities';
-import { Logger } from '@footy/fmk';
-import { id as generateId } from '@footy/fmk/libs/generator';
+import { Logger } from '@gaias/basenode';
+import { id as generateId } from '@gaias/basenode';
 
 export interface SeatPosition {
   rowLetter: string;

@@ -3,12 +3,13 @@ import { Inject, Service } from 'typedi';
 import { MoviesRepo } from '@footy/repositories';
 import { Movies } from '@footy/entities';
 import { CreateMoviesRequest, UpdateMoviesRequest } from '@footy/vo';
-import { id as generateId } from '@footy/fmk/libs/generator';
+import { id as generateId } from '@gaias/basenode';
 import { SeatSelectionService } from '@footy/services/SeatSelectionService';
-import { Logger } from '@footy/fmk';
+import { Logger } from '@gaias/basenode';
 
 @Service()
 export class MoviesService {
+  // Logger
   private logger = Logger.getLogger(MoviesService);
 
   @Inject()
@@ -30,7 +31,8 @@ export class MoviesService {
   }
 
   async createMovie(request: CreateMoviesRequest): Promise<Movies> {
-    this.logger.info('Creating movie:', request);
+    //
+    this.logger.info(request, 'Creating movie:');
     const movie = {
       id: generateId(16),
       ...request,
@@ -43,7 +45,7 @@ export class MoviesService {
       // Initialize default seat selection rules
       await this.seatSelectionService.initializeDefaultRules();
       this.logger.info(`Default seat selection rules initialized for movie: ${createdMovie.id}`);
-    } catch (error) {
+    } catch (error:any) {
       this.logger.error('Failed to initialize default seat selection rules:', error);
       // We don't fail the movie creation if rules initialization fails
     }

@@ -1,1 +1,1 @@
-mariaDBUrl: "mysql://root:AyEB7kJjm4@127.0.0.1:3306/fotNet"
+mariaDBUrl: "mysql://root:AyEB7kJjm4@192.168.88.10:3306/fotNet"

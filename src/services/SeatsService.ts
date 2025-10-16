@@ -2,7 +2,7 @@
 import { Inject, Service } from 'typedi';
 import { BookingsRepo, SeatsRepo } from '@footy/repositories';
 import { Seats } from '@footy/entities';
-import { id as generateId } from '@footy/fmk/libs/generator';
+import { id as generateId } from '@gaias/basenode';
 
 @Service()
 export class SeatsService {

@@ -1,4 +1,4 @@
-import { Get, JsonController, Logger, Post, Put, Delete } from '@footy/fmk';
+import { Get, JsonController, Logger, Post, Put, Delete } from '@gaias/basenode';
 import { Inject } from 'typedi';
 import { Seats } from '@footy/entities';
 import { SeatsService } from '@footy/services';

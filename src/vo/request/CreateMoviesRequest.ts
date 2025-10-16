@@ -1,4 +1,4 @@
-import { i18n } from '@footy/fmk/libs/validator';
+import { i18n } from '@gaias/basenode';
 import { Expose } from 'class-transformer';
 import { IsIn, IsInt, IsNumber, IsOptional, IsString, Length, Max, Min } from 'class-validator';
 

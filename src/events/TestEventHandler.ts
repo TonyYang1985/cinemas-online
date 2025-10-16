@@ -1,5 +1,5 @@
 import { Inject, Service } from 'typedi';
-import { onEvent } from '@footy/fmk';
+import { onEvent } from '@gaias/basenode';
 import { SystemConfigsService } from '@footy/services';
 
 @Service()

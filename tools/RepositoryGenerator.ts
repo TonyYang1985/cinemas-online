@@ -51,7 +51,7 @@ fs.writeFileSync = (...args: any) => {
         const entityName = file;
         const updatedContent = content
           .replace(/import \{ Repository \} from 'typeorm';/, "import { DataSource } from 'typeorm';")
-          .replace(/import \{ InjectRepository \} from 'typeorm-typedi-extensions';/, "import { BaseRepository } from '@footy/fmk';")
+          .replace(/import \{ InjectRepository \} from 'typeorm-typedi-extensions';/, "import { BaseRepository } from '@gaias/basenode';")
           .replace(/@Service\(\)\nexport class (\w+)Repo \{/, '@Service()\nexport class $1Repo extends BaseRepository<$1> {')
           .replace(/constructor\(\n\s+@InjectRepository\(\w+\)\n\s+private repository: Repository<\w+>\n\s+\) \{\}/, 'constructor(dataSource: DataSource) {\n        super(dataSource, ' + entityName + ');\n    }\n\n    //Pass-through methods to repository\n    async find(options?: any) {\n        return this.repository.find(options);\n    }');
 

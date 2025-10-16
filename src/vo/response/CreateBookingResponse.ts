@@ -1,5 +1,5 @@
 import { Bookings, Seats } from '@footy/entities';
-import { AbstractBuilder, BaseResponse } from '@footy/fmk/libs/type/builder';
+import { AbstractBuilder, BaseResponse } from '@gaias/basenode';
 
 import { Expose } from 'class-transformer';
 

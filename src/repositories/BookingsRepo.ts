@@ -1,7 +1,7 @@
 // {}
 import { Service } from 'typedi';
 import { DataSource } from 'typeorm';
-import { BaseRepository } from '@footy/fmk';
+import { BaseRepository } from '@gaias/basenode';
 import { Bookings } from '@footy/entities';
 import { UpdateBookingRequest } from '@footy/vo';
 

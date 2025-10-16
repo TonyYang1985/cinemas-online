@@ -2,7 +2,7 @@
 import { Service } from 'typedi';
 import { SystemConfigs } from '@footy/entities';
 import { DataSource } from 'typeorm';
-import { BaseRepository } from '@footy/fmk';
+import { BaseRepository } from '@gaias/basenode';
 
 @Service()
 export class SystemConfigsRepo extends BaseRepository<SystemConfigs> {

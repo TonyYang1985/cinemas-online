@@ -1,7 +1,7 @@
 import { Expose } from 'class-transformer';
 import { IsArray, IsBoolean, IsNumber, IsOptional, Length, Matches, Max, Min } from 'class-validator';
-import { i18n } from '@footy/fmk/libs/validator';
-import { ct } from '@footy/fmk';
+import { i18n } from '@gaias/basenode';
+import { ct } from '@gaias/basenode';
 
 @Expose()
 export class CreateBookingRequest {

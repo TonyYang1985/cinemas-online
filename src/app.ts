@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { ApiRegisterController, bootstrap, HealthCheckController } from '@footy/fmk';
+import { ApiRegisterController, bootstrap, HealthCheckController } from '@gaias/basenode';
 import * as rsControllers from '@footy/controllers';
 import * as wsControllers from '@footy/wsControllers';
 import * as Entities from '@footy/entities';
