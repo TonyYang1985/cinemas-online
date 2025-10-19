@@ -103,7 +103,12 @@ export class SeatSelectionService {
    * @param startingPosition Optional starting position
    * @returns Array of selected seat positions
    */
-  private selectSeats(movie: Movies, availableSeats: Map<string, Set<number>>, numTickets: number, startingPosition?: SeatPosition): SeatPosition[] {
+  private selectSeats(
+    movie: Movies,
+    availableSeats: Map<string, Set<number>>,
+    numTickets: number,
+    startingPosition?: SeatPosition,
+  ): SeatPosition[] {
     // If starting position is specified, use custom allocation
     if (startingPosition) {
       return this.allocateFromSpecifiedPosition(movie, availableSeats, numTickets, startingPosition);
@@ -120,7 +125,11 @@ export class SeatSelectionService {
    * @param numTickets Number of tickets to allocate
    * @returns Array of selected seat positions
    */
-  private allocateUsingDefaultRules(movie: Movies, availableSeats: Map<string, Set<number>>, numTickets: number): SeatPosition[] {
+  private allocateUsingDefaultRules(
+    movie: Movies,
+    availableSeats: Map<string, Set<number>>,
+    numTickets: number,
+  ): SeatPosition[] {
     const selectedSeats: SeatPosition[] = [];
 
     // Start from furthest row (Z -> A)
@@ -142,11 +151,17 @@ export class SeatSelectionService {
 
       // Sort seats by their distance from the middle position
       // This ensures we start from the middle and expand outward
-      const sortedByMiddle = [...availableSeatNumbers].sort((a, b) => Math.abs(a - middlePosition) - Math.abs(b - middlePosition));
+      const sortedByMiddle = [...availableSeatNumbers].sort(
+        (a, b) => Math.abs(a - middlePosition) - Math.abs(b - middlePosition),
+      );
 
       // Take as many consecutive seats as possible starting from the middle
       // We need to find the best consecutive sequence
-      const bestSequence = this.findBestConsecutiveSequence(availableSeatNumbers, Math.min(seatsNeeded, availableSeatNumbers.length), middlePosition);
+      const bestSequence = this.findBestConsecutiveSequence(
+        availableSeatNumbers,
+        Math.min(seatsNeeded, availableSeatNumbers.length),
+        middlePosition,
+      );
 
       // Add the selected seats to our result
       for (const seatNumber of bestSequence) {
@@ -215,7 +230,12 @@ export class SeatSelectionService {
    * @param startingPosition The starting position
    * @returns Array of selected seat positions
    */
-  private allocateFromSpecifiedPosition(movie: Movies, availableSeats: Map<string, Set<number>>, numTickets: number, startingPosition: SeatPosition): SeatPosition[] {
+  private allocateFromSpecifiedPosition(
+    movie: Movies,
+    availableSeats: Map<string, Set<number>>,
+    numTickets: number,
+    startingPosition: SeatPosition,
+  ): SeatPosition[] {
     const selectedSeats: SeatPosition[] = [];
 
     // Get all rows in order from the starting row to the front
@@ -262,7 +282,11 @@ export class SeatSelectionService {
       }
 
       // Allocate remaining seats using default rules
-      const remainingSeats = this.allocateUsingDefaultRules(movie, remainingAvailableSeats, numTickets - selectedSeats.length);
+      const remainingSeats = this.allocateUsingDefaultRules(
+        movie,
+        remainingAvailableSeats,
+        numTickets - selectedSeats.length,
+      );
 
       selectedSeats.push(...remainingSeats);
     }

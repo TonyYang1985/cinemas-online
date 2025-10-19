@@ -29,7 +29,11 @@ export class SeatsRepo extends BaseRepository<Seats> {
   }
 
   async findAllSeatsForMovie(movieId: string): Promise<Seats[]> {
-    return this.repository.createQueryBuilder('seat').innerJoin('seat.booking', 'booking').where('booking.movieId = :movieId', { movieId }).getMany();
+    return this.repository
+      .createQueryBuilder('seat')
+      .innerJoin('seat.booking', 'booking')
+      .where('booking.movieId = :movieId', { movieId })
+      .getMany();
   }
 
   async createSeat(seat: Partial<Seats>): Promise<Seats> {

@@ -45,7 +45,7 @@ export class MoviesService {
       // Initialize default seat selection rules
       await this.seatSelectionService.initializeDefaultRules();
       this.logger.info(`Default seat selection rules initialized for movie: ${createdMovie.id}`);
-    } catch (error:any) {
+    } catch (error: any) {
       this.logger.error('Failed to initialize default seat selection rules:', error);
       // We don't fail the movie creation if rules initialization fails
     }
@@ -101,7 +101,10 @@ export class MoviesService {
     const allSeats = this.generateAllSeats(movie.totalRows, movie.seatsPerRow);
 
     // Filter out booked seats
-    return allSeats.filter((seat) => !bookedSeats.some((bookedSeat) => bookedSeat.row === seat.row && bookedSeat.seatNumber === seat.seatNumber));
+    return allSeats.filter(
+      (seat) =>
+        !bookedSeats.some((bookedSeat) => bookedSeat.row === seat.row && bookedSeat.seatNumber === seat.seatNumber),
+    );
   }
 
   // Helper method to get movie with bookings and seats

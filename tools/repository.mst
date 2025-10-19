@@ -1,19 +1,13 @@
-// { }
-import { Service } from 'typedi';
-import { {{toEntityName tscName}} } from '@footy/entities';
-import { DataSource } from 'typeorm';
-import { BaseRepository } from '@gaias/basenode';
+// {}
+import { Service, Inject } from 'typedi';
+import { DataSource, Repository } from 'typeorm';
+import { {{toEntityName tscName}} } from '../entities';
 
 @Service()
-export class {{toEntityName tscName}}Repo extends BaseRepository<{{toEntityName tscName}}> {
-    //Pass-through methods to repository
-    constructor(dataSource: DataSource) {
-        super(dataSource, {{toEntityName tscName}});
-    }
-
-    //Pass-through methods to repository
-    async find(options?: any) {
-        return this.repository.find(options);
-    }
-    // Add your code here
+export class {{toEntityName tscName}}Repo extends Repository<{{toEntityName tscName}}> {
+  constructor(@Inject('dataSource') dataSource: DataSource) {
+    super({{toEntityName tscName}}, dataSource.createEntityManager());
+  }
+  
+  // Add your code here
 }

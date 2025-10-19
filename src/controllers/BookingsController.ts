@@ -49,7 +49,10 @@ export class BookingsController {
   }
 
   @Put('/:id/seats', '*', 'cinemas-online.bookings.updateSeats')
-  async updateBookingSeats(@Param('id') id: string, @Body() request: UpdateBookingSeatsRequest): Promise<CreateBookingResponse> {
+  async updateBookingSeats(
+    @Param('id') id: string,
+    @Body() request: UpdateBookingSeatsRequest,
+  ): Promise<CreateBookingResponse> {
     // 确保请求中包含bookingId
     request.bookingId = id;
     return this.bookingsService.updateBookingSeats(request);

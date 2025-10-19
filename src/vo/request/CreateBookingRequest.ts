@@ -16,7 +16,6 @@ export class CreateBookingRequest {
   numTickets: number;
 }
 
-
 @ct.Expose()
 export class CreateBookingVo {
   @i18n(Length, 1, 36)
@@ -57,7 +56,6 @@ export class SeatPositionVo {
   @Expose()
   seatNumber: number;
 }
-
 
 @Expose()
 export class UpdateBookingSeatsRequest {

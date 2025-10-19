@@ -19,8 +19,13 @@ export class CreateBookingResponse extends BaseResponse implements Partial<Booki
 
   errorMessage: string;
 
-  static success(id: string, bookingCode: string, movieId: string, numTickets: number, seatsList?: Partial<Seats>[]): CreateBookingResponse {
-    //eslint-disable-next-line
+  static success(
+    id: string,
+    bookingCode: string,
+    movieId: string,
+    numTickets: number,
+    seatsList?: Partial<Seats>[],
+  ): CreateBookingResponse {
     return this.createBuilder()
       .with('id', id)
       .with('bookingCode', bookingCode)

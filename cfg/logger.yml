@@ -1,9 +1,5 @@
-
 level: debug
-transport:
-  target: pino-pretty
-  options:
-    translateTime: SYS:standard
-    ignore: pid,hostname
-    levelFirst: true
-    colorize: true
+prettyPrint:
+  translateTime: SYS:standard
+  ignore: pid,hostname
+  levelFirst: true

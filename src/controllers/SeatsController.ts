@@ -28,7 +28,11 @@ export class SeatsController {
   }
 
   @Get('/check-availability/:movieId/:rowLetter/:seatNumber', '*', 'cinemas-online.seats.checkAvailability')
-  async checkSeatAvailability(@Param('movieId') movieId: string, @Param('rowLetter') rowLetter: string, @Param('seatNumber') seatNumber: number): Promise<{ available: boolean }> {
+  async checkSeatAvailability(
+    @Param('movieId') movieId: string,
+    @Param('rowLetter') rowLetter: string,
+    @Param('seatNumber') seatNumber: number,
+  ): Promise<{ available: boolean }> {
     const isAvailable = await this.seatsService.isSeatAvailable(movieId, rowLetter, seatNumber);
     return { available: isAvailable };
   }

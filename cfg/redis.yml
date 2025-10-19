@@ -1,1 +1,6 @@
-redis: "redis://192.168.88.10/4"
+# Redis 配置 / Redis Configuration
+# 优先使用环境变量 REDIS_URL，如果未设置则使用下面的默认值
+# Environment variable REDIS_URL takes precedence over this default value
+# 推荐：请在 .env 文件中设置真实的 Redis 连接信息
+# Recommended: Set real Redis connection in .env file
+redis: "redis://192.168.88.10:6379/4"

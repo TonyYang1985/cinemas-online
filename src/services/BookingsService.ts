@@ -147,7 +147,13 @@ export class BookingsService {
       seatNumber: seat.seatNumber,
     }));
 
-    return CreateBookingResponse.success(booking.id, booking.bookingCode, booking.movieId, booking.numTickets, seatsList);
+    return CreateBookingResponse.success(
+      booking.id,
+      booking.bookingCode,
+      booking.movieId,
+      booking.numTickets,
+      seatsList,
+    );
   }
 
   async updateBooking(id: string, request: UpdateBookingRequest): Promise<Bookings | null> {
@@ -199,7 +205,7 @@ export class BookingsService {
             numTickets,
             startingPosition,
           });
-        } catch (error:any) {
+        } catch (error: any) {
           // If seat allocation fails, log error but don't fail the update
           this.logger.error('Failed to allocate seats', error);
         }

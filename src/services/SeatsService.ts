@@ -68,7 +68,10 @@ export class SeatsService {
     }
 
     // If changing position, check if the new position is already taken
-    if ((seatData.rowLetter && seatData.rowLetter !== seat.rowLetter) || (seatData.seatNumber !== undefined && seatData.seatNumber !== seat.seatNumber)) {
+    if (
+      (seatData.rowLetter && seatData.rowLetter !== seat.rowLetter) ||
+      (seatData.seatNumber !== undefined && seatData.seatNumber !== seat.seatNumber)
+    ) {
       const bookingId = seatData.bookingId || seat.bookingId;
       const rowLetter = seatData.rowLetter || seat.rowLetter;
       const seatNumber = seatData.seatNumber !== undefined ? seatData.seatNumber : seat.seatNumber;
