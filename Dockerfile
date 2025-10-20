@@ -10,21 +10,21 @@ ENV NODE_ENV=development
 # Set working directory
 WORKDIR /fot.sg/build
 
-# Copy package files first for better layer caching
-COPY package.json yarn.lock* ./
+# Copy package files and build configuration for better layer caching
+COPY package.json yarn.lock* tsconfig.json ./
 
 # Install ALL dependencies including devDependencies
 RUN yarn install --frozen-lockfile --non-interactive --production=false
 
-# check ncc
-RUN echo "=== ✅Checking NCC ===" && \
+# Verify ncc and tsconfig.json
+RUN echo "=== ✅ Checking NCC ===" && \
     which ncc && \
     ncc --version && \
-    echo "✅ Global ncc path: $(which ncc)" && \
-    echo "✅ Local ncc path: $(ls -la ./node_modules/.bin/ncc)" && \
-    ./node_modules/.bin/ncc --version && \
-    echo $PATH
- 
+    echo "✅ NCC is ready" && \
+    echo "=== ✅ Checking tsconfig.json ===" && \
+    test -f tsconfig.json && \
+    echo "✅ tsconfig.json exists"
+
 # Copy source code
 COPY . .
 
