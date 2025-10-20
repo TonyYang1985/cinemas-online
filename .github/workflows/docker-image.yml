@@ -20,13 +20,6 @@ jobs:
       - name: Current Version From Package.json
         id: package-version
         uses: martinbeentjes/npm-get-version-action@main
-        # run: echo "Current Version " +${{ steps.package-version.outputs.current-version}}
-      # - name: Docker Extract metadata from Git reference and GitHub events
-      #   id: meta
-      #   uses: docker/metadata-action@v4
-      #   with:
-      #     images: yxj1985/base_node
-
       - name: Set Up QEMU
         uses: docker/setup-qemu-action@v3
 
@@ -52,18 +45,9 @@ jobs:
           platforms: linux/amd64,linux/arm64/v8
           # push image to docker hub
           push: ${{ github.event_name != 'pull_request' }}
-          # Add multiple Tags
-          # latest version: yxj1985/${{ github.event.repository.name }}:latest
-          # package version: yxj1985/${{ github.event.repository.name }}:v${{ steps.package-version.outputs.current-version}}
-          # timestampe version: yxj1985/${{ github.event.repository.name }}:${{ steps.date.outputs.date }}
           tags: |
             yxj1985/${{ github.event.repository.name }}:latest
             yxj1985/${{ github.event.repository.name }}:v${{ steps.package-version.outputs.current-version}}
             yxj1985/${{ github.event.repository.name }}:v${{ steps.date.outputs.date }}
-
-          # docker/metadata-action@v4 meta (tags labels) from Git reference and GitHub events
-          # tags: ${{ steps.meta.outputs.tags }}
-          # labels: ${{ steps.meta.outputs.labels }}
-
       - name: Project Image Build And Push Successfully
         run: echo Current Version v${{ steps.package-version.outputs.current-version}} Successfully!!
