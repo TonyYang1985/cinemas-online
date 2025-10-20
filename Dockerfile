@@ -4,7 +4,7 @@
 FROM yxj1985/base_node:latest AS builder
 
 # Ensure we're NOT in production mode during build
-ENV NODE_ENV production
+ENV NODE_ENV=production
 
 # Set working directory
 WORKDIR /fot.sg/build
