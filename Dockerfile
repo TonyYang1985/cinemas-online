@@ -1,7 +1,10 @@
 # ==================================
 # Building Stage
 # ==================================
-FROM yxj1985/base_node:latest as builder
+FROM yxj1985/base_node:latest AS builder
+
+# Ensure we're NOT in production mode during build
+ENV NODE_ENV production
 
 # Set working directory
 WORKDIR /fot.sg/build
@@ -9,14 +12,14 @@ WORKDIR /fot.sg/build
 # Copy package files first for better layer caching
 COPY package.json yarn.lock* ./
 
-# Install dependencies (production + dev for building)
-RUN yarn install --frozen-lockfile --non-interactive
+# Install ALL dependencies including devDependencies
+RUN yarn install --frozen-lockfile --non-interactive --production=false
 
 # Copy source code
 COPY . .
 
 # Build application
-RUN yarn buildNum && yarn ncc:build
+RUN yarn run buildNum && yarn run ncc:build
 
 # Remove development configuration files
 RUN rm -f ./cfg/*.development.yaml ./cfg/*.development.yml
