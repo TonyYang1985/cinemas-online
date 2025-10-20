@@ -67,10 +67,6 @@ Thumbs.db
 tools
 scripts/*.dev.js
 
-# TypeScript
-tsconfig.json
-tsconfig.*.json
-
 # ESLint and Prettier
 .eslintrc*
 .prettierrc*
