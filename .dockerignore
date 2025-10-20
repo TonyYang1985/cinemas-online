@@ -1,10 +1,80 @@
+# Dependencies
 node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build output
 dist
-.cache
-.vscode
-.git
-tools
-*.log
+build
 temp
+*.tsbuildinfo
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Version control
+.git
+.gitignore
+.gitattributes
+
+# Docker
+Dockerfile*
+.dockerignore
+docker-compose*.yml
+
+# Development files
+.cache
+.env*
+!.env.example
+
+# Testing
+coverage
+.nyc_output
+*.test.ts
+*.spec.ts
+
+# Documentation
+*.md
+!README.md
+docs
+
+# CI/CD
+.github
+.gitlab-ci.yml
+.circleci
+
+# Local data
 redisdata
 mysqldata
+*.sql
+*.db
+*.sqlite
+
+# Logs
+logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Development tools
+tools
+scripts/*.dev.js
+
+# TypeScript
+tsconfig.json
+tsconfig.*.json
+
+# ESLint and Prettier
+.eslintrc*
+.prettierrc*
+.editorconfig
+
+# Husky
+.husky

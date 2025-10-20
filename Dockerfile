@@ -1,27 +1,75 @@
-FROM node:14-alpine as installer
+# ==================================
+# Building Stage
+# ==================================
+FROM yxj1985/base_node:latest as builder
 
-RUN apk add --no-cache alpine-sdk python3
-
+# Set working directory
 WORKDIR /fot.sg/build
-ENV YARN_CACHE_FOLDER=/.yarn/cache
-COPY package.json .
+
+# Copy package files first for better layer caching
+COPY package.json yarn.lock* ./
+
+# Install dependencies (production + dev for building)
+RUN yarn install --frozen-lockfile --non-interactive
+
+# Copy source code
 COPY . .
-RUN yarn install --ignore-scripts
+
+# Build application
 RUN yarn buildNum && yarn ncc:build
-RUN rm -rfv ./cfg/*.development.yaml
 
-FROM node:14-alpine
+# Remove development configuration files
+RUN rm -f ./cfg/*.development.yaml ./cfg/*.development.yml
 
-WORKDIR /fot.sg/build
-RUN apk add --no-cache curl
-ENV YARN_CACHE_FOLDER=/.yarn/cache
-COPY cfg cfg
-COPY keys keys
-COPY --from=installer /.yarn/cache /.yarn/cache
-COPY --from=installer /fot.sg/build/node_modules /fot.sg/build/node_modules
-COPY --from=installer /fot.sg/build/dist/single/*.js ./dist/single/
-COPY package.json ./
+# ==================================
+# Production Stage
+# ==================================
+FROM node:22-alpine
 
-ENV NODE_ENV production
+# Add metadata labels
+LABEL maintainer="FOT Team" \
+      description="Base Node API Framework" \
+      version="1.0.13"
+
+# Set working directory
+WORKDIR /fot.sg/app
+
+# Install runtime dependencies only
+RUN apk add --no-cache \
+    curl \
+    tzdata \
+    tini \
+    && rm -rf /var/cache/apk/*
+
+# Set timezone (optional, change as needed)
+ENV TZ=Asia/Singapore
+
+# Copy built artifacts from builder
+COPY --from=builder /fot.sg/build/dist/single/*.js ./dist/single/
+COPY --from=builder /fot.sg/build/cfg ./cfg
+COPY --from=builder /fot.sg/build/package.json ./
+
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001 && \
+    chown -R nodejs:nodejs /fot.sg/app
+
+# Switch to non-root user
+USER nodejs
+
+# Set production environment
+ENV NODE_ENV=production \
+    NODE_OPTIONS="--max-old-space-size=2048"
+
+# Expose application port
 EXPOSE 3000
-CMD [ "node", "./dist/single/index.js" ]
+
+# Add health check
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+    CMD curl -f http://localhost:3000/_healthcheck || exit 1
+
+# Use tini to handle signals properly
+ENTRYPOINT ["/sbin/tini", "--"]
+
+# Start application
+CMD ["node", "./dist/single/index.js"]

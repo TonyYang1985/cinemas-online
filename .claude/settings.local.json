@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(yarn deps:check:*)",
+      "Bash(yarn build:single)",
+      "Bash(yarn gen:db-schema:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
