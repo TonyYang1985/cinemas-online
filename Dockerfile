@@ -16,7 +16,7 @@ RUN yarn install --frozen-lockfile --non-interactive
 COPY . .
 
 # Build application
-RUN yarn run buildNum && yarn run ncc:build
+RUN yarn buildNum && yarn ncc:build
 
 # Remove development configuration files
 RUN rm -f ./cfg/*.development.yaml ./cfg/*.development.yml
