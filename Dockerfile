@@ -1,30 +1,25 @@
 # ==================================
 # Building Stage
 # ==================================
-#FROM yxj1985/base_node:latest AS builder
 FROM ghcr.io/tonyyang1985/base_node:latest AS builder
 
-# Ensure we're NOT in production mode during build
-# 设置了ENV NODE_ENV=production，这会导致 yarn 跳过 devDependencies 的安装
+# Set to development to ensure devDependencies are available
 ENV NODE_ENV=development
 
-# Set working directory
 WORKDIR /fot.sg/build
 
-# Copy package files and build configuration for better layer caching
+# Copy dependency files first (better caching)
 COPY package.json yarn.lock* tsconfig.json ./
 
-# Install ALL dependencies including devDependencies
-RUN yarn install --frozen-lockfile --non-interactive --production=false
+# Install all dependencies
+RUN yarn install --frozen-lockfile --non-interactive
 
-# Verify ncc and tsconfig.json
-RUN echo "=== ✅ Checking NCC ===" && \
-    which ncc && \
-    ncc --version && \
-    echo "✅ NCC is ready" && \
-    echo "=== ✅ Checking tsconfig.json ===" && \
-    test -f tsconfig.json && \
-    echo "✅ tsconfig.json exists"
+# Verify tools are available
+RUN echo "=== Verifying Build Tools ===" && \
+    which ncc && ncc --version && echo "✅ NCC OK" && \
+    which tsc && tsc --version && echo "✅ TypeScript OK" && \
+    test -f tsconfig.json && echo "✅ tsconfig.json OK" && \
+    echo "=== All tools verified ==="
 
 # Copy source code
 COPY . .
@@ -32,7 +27,7 @@ COPY . .
 # Build application
 RUN yarn run buildNum && yarn run ncc:build
 
-# Remove development configuration files
+# Clean up development files
 RUN rm -f ./cfg/*.development.yaml ./cfg/*.development.yml
 
 # ==================================
@@ -40,25 +35,27 @@ RUN rm -f ./cfg/*.development.yaml ./cfg/*.development.yml
 # ==================================
 FROM node:22-alpine
 
-# Add metadata labels
+# Metadata
 LABEL maintainer="FOT Team" \
-      description="Base Node API Framework" \
-      version="1.0.13"
+      description="FOT Node API Framework" \
+      version="1.0.13" \
+      org.opencontainers.image.source="https://github.com/TonyYang1985/your-app" \
+      org.opencontainers.image.description="FOT Node.js API Application" \
+      org.opencontainers.image.licenses="MIT"
 
-# Set working directory
 WORKDIR /fot.sg/app
 
-# Install runtime dependencies only
+# Install runtime dependencies
 RUN apk add --no-cache \
     curl \
     tzdata \
-    tini \
-    && rm -rf /var/cache/apk/*
+    tini && \
+    rm -rf /var/cache/apk/*
 
-# Set timezone (optional, change as needed)
+# Set timezone
 ENV TZ=Asia/Singapore
 
-# Copy built artifacts from builder
+# Copy built artifacts from builder stage
 COPY --from=builder /fot.sg/build/dist/single/*.js ./dist/single/
 COPY --from=builder /fot.sg/build/cfg ./cfg
 COPY --from=builder /fot.sg/build/package.json ./
@@ -75,14 +72,14 @@ USER nodejs
 ENV NODE_ENV=production \
     NODE_OPTIONS="--max-old-space-size=2048"
 
-# Expose application port
+# Expose port
 EXPOSE 3000
 
-# Add health check
+# Health check
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
     CMD curl -f http://localhost:3000/_healthcheck || exit 1
 
-# Use tini to handle signals properly
+# Use tini as init process
 ENTRYPOINT ["/sbin/tini", "--"]
 
 # Start application
