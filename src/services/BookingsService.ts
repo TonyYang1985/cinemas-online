@@ -118,6 +118,10 @@ export class BookingsService {
       return CreateBookingResponse.error('ERROR_CODE5', 'booking not found');
     }
 
+    if (!booking.movieId) {
+      return CreateBookingResponse.error('ERROR_CODE1', 'booking has no movie associated');
+    }
+
     // Delete existing seats
     await this.seatsRepo.deleteByBookingId(request.bookingId);
 
@@ -185,6 +189,11 @@ export class BookingsService {
         await this.seatsRepo.createMultipleSeats(seatsList);
       } else {
         // Auto-allocate seats based on rules
+        if (!booking.movieId) {
+          this.logger.error('Booking has no movie associated');
+          return null;
+        }
+
         const movie = await this.moviesRepo.findById(booking.movieId);
         if (!movie) {
           return null;

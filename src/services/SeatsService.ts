@@ -76,6 +76,11 @@ export class SeatsService {
       const rowLetter = seatData.rowLetter || seat.rowLetter;
       const seatNumber = seatData.seatNumber !== undefined ? seatData.seatNumber : seat.seatNumber;
 
+      // Ensure all required fields are non-null before checking position
+      if (!bookingId || !rowLetter || seatNumber === null || seatNumber === undefined) {
+        return null;
+      }
+
       const existingSeat = await this.findSeatByPosition(bookingId, rowLetter, seatNumber);
 
       if (existingSeat && existingSeat.id !== id) {

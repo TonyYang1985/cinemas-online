@@ -3,7 +3,8 @@
     "allow": [
       "Bash(yarn deps:check:*)",
       "Bash(yarn build:single)",
-      "Bash(yarn gen:db-schema:*)"
+      "Bash(yarn gen:db-schema:*)",
+      "Bash(npm run ncc:build:*)"
     ],
     "deny": [],
     "ask": []

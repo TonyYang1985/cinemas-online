@@ -1,34 +1,27 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  RelationId,
-} from "typeorm";
-import { Seats } from "./Seats";
-import { Movies } from "./Movies";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, RelationId } from 'typeorm';
+import { Seats } from './Seats';
+import { Movies } from './Movies';
 
-@Entity("bookings", { schema: "fotNet" })
+@Entity('bookings', { schema: 'fotNet' })
 export class Bookings {
-  @Column("varchar", { primary: true, name: "id", length: 36 })
+  @Column('varchar', { primary: true, name: 'id', length: 36 })
   id: string;
 
-  @Column("varchar", { name: "booking_code", length: 10 })
+  @Column('varchar', { name: 'booking_code', length: 10 })
   bookingCode: string;
 
-  @Column("int", { name: "num_tickets" })
+  @Column('int', { name: 'num_tickets' })
   numTickets: number;
 
-  @Column("timestamp", {
-    name: "created_at",
-    default: () => "CURRENT_TIMESTAMP",
+  @Column('timestamp', {
+    name: 'created_at',
+    default: () => 'CURRENT_TIMESTAMP',
   })
   createdAt: Date;
 
-  @Column("timestamp", {
-    name: "updated_at",
-    default: () => "CURRENT_TIMESTAMP",
+  @Column('timestamp', {
+    name: 'updated_at',
+    default: () => 'CURRENT_TIMESTAMP',
   })
   updatedAt: Date;
 
@@ -36,10 +29,10 @@ export class Bookings {
   seats: Seats[];
 
   @ManyToOne(() => Movies, (movies) => movies.bookings, {
-    onDelete: "NO ACTION",
-    onUpdate: "NO ACTION",
+    onDelete: 'NO ACTION',
+    onUpdate: 'NO ACTION',
   })
-  @JoinColumn([{ name: "movie_id", referencedColumnName: "id" }])
+  @JoinColumn([{ name: 'movie_id', referencedColumnName: 'id' }])
   movie: Movies;
 
   @RelationId((bookings: Bookings) => bookings.movie)
