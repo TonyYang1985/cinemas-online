@@ -8,7 +8,7 @@ import * as Handlers from '@footy/events';
 
 // Initialize transactional context before bootstrap
 initializeTransactionalContext({ storageDriver: StorageDriver.CLS_HOOKED });
-
+//
 bootstrap({
   restfulControllers: [...Object.values(rsControllers), ApiRegisterController, HealthCheckController],
   wsControllers: Object.values(wsControllers),
