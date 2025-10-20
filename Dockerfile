@@ -1,7 +1,8 @@
 # ==================================
 # Building Stage
 # ==================================
-FROM yxj1985/base_node:latest AS builder
+#FROM yxj1985/base_node:latest AS builder
+FROM ghcr.io/tonyyang1985/base_node:latest AS builder
 
 # Ensure we're NOT in production mode during build
 # 设置了ENV NODE_ENV=production，这会导致 yarn 跳过 devDependencies 的安装

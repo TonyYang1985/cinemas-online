@@ -1,53 +1,131 @@
 name: Base Node CI
+
 on:
   push:
-    branches: ["main"]
+    branches: ["develope", "main"]
     tags:
       - "v*"
   pull_request:
-    branches: ["main"]
+    branches: ["develope", "main"]
+
+env:
+  REGISTRY_GHCR: ghcr.io
+  REGISTRY_DOCKERHUB: docker.io
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+
     steps:
       - name: Project CICD Start
         id: date
-        run:  echo "date=$(TZ=Asia/Singapore date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
+        run: echo "date=$(TZ=Asia/Singapore date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
 
-      - name: Clone Github Repository 
+      - name: Clone Github Repository
         uses: actions/checkout@v4
 
       - name: Current Version From Package.json
         id: package-version
         uses: martinbeentjes/npm-get-version-action@main
+
+      - name: Convert repository name to lowercase
+        id: repo
+        run: |
+          echo "repository=${GITHUB_REPOSITORY@L}" >> $GITHUB_OUTPUT
+          echo "owner=${GITHUB_REPOSITORY_OWNER@L}" >> $GITHUB_OUTPUT
+          echo "name=${GITHUB_REPOSITORY##*/}" >> $GITHUB_OUTPUT
+
       - name: Set Up QEMU
         uses: docker/setup-qemu-action@v3
 
-      - name: SetUp Docker build
-        id: build
+      - name: SetUp Docker Buildx
+        id: buildx
         uses: docker/setup-buildx-action@v3
 
       - name: Available Platforms
-        run: echo ${{ steps.build.outputs.platforms }}
+        run: echo "Platforms: ${{ steps.buildx.outputs.platforms }}"
 
-      - name: Login To DockerHub
+      - name: Login to Docker Hub
+        if: github.event_name != 'pull_request'
         uses: docker/login-action@v3
         with:
+          registry: ${{ env.REGISTRY_DOCKERHUB }}
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-      - name: Build And Push Image to Docker Hub
+      - name: Login to GitHub Container Registry
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY_GHCR }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            yxj1985/${{ github.event.repository.name }}
+            ${{ env.REGISTRY_GHCR }}/${{ steps.repo.outputs.repository }}
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=v${{ steps.package-version.outputs.current-version}}
+            type=raw,value=v${{ steps.date.outputs.date }}
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+
+      - name: Build And Push to Multiple Registries
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ./Dockerfile
-          # List of target platforms for build  eg: linux/amd64,linux/arm64,linux/arm/v7
-          platforms: linux/amd64,linux/arm64/v8
-          # push image to docker hub
+          platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
-          tags: |
-            yxj1985/${{ github.event.repository.name }}:latest
-            yxj1985/${{ github.event.repository.name }}:v${{ steps.package-version.outputs.current-version}}
-            yxj1985/${{ github.event.repository.name }}:v${{ steps.date.outputs.date }}
-      - name: Project Image Build And Push Successfully
-        run: echo Current Version v${{ steps.package-version.outputs.current-version}} Successfully!!
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          provenance: false
+
+      - name: Images Pushed Successfully
+        if: github.event_name != 'pull_request'
+        run: |
+          echo "## 🎉 Build Success!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📦 Version Information" >> $GITHUB_STEP_SUMMARY
+          echo "- **Package Version:** v${{ steps.package-version.outputs.current-version}}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Build Timestamp:** ${{ steps.date.outputs.date }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Git Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🐳 Docker Hub" >> $GITHUB_STEP_SUMMARY
+          echo '```bash' >> $GITHUB_STEP_SUMMARY
+          echo "docker pull yxj1985/${{ github.event.repository.name }}:latest" >> $GITHUB_STEP_SUMMARY
+          echo "docker pull yxj1985/${{ github.event.repository.name }}:v${{ steps.package-version.outputs.current-version}}" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🐙 GitHub Container Registry" >> $GITHUB_STEP_SUMMARY
+          echo '```bash' >> $GITHUB_STEP_SUMMARY
+          echo "docker pull ${{ env.REGISTRY_GHCR }}/${{ steps.repo.outputs.repository }}:latest" >> $GITHUB_STEP_SUMMARY
+          echo "docker pull ${{ env.REGISTRY_GHCR }}/${{ steps.repo.outputs.repository }}:v${{ steps.package-version.outputs.current-version}}" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🔗 Links" >> $GITHUB_STEP_SUMMARY
+          echo "- [Docker Hub Repository](https://hub.docker.com/r/yxj1985/${{ github.event.repository.name }})" >> $GITHUB_STEP_SUMMARY
+          echo "- [GHCR Package](https://github.com/${{ github.repository }}/pkgs/container/${{ steps.repo.outputs.name }})" >> $GITHUB_STEP_SUMMARY
+
+      - name: Build Summary for PR
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "## 🔍 Build Test Success!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Docker image built successfully (not pushed for PR)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Platforms:** linux/amd64, linux/arm64" >> $GITHUB_STEP_SUMMARY
+          echo "- **Version:** v${{ steps.package-version.outputs.current-version}}" >> $GITHUB_STEP_SUMMARY
