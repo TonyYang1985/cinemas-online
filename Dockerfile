@@ -4,7 +4,8 @@
 FROM yxj1985/base_node:latest AS builder
 
 # Ensure we're NOT in production mode during build
-ENV NODE_ENV=production
+# 设置了ENV NODE_ENV=production，这会导致 yarn 跳过 devDependencies 的安装
+ENV NODE_ENV=development
 
 # Set working directory
 WORKDIR /fot.sg/build
@@ -14,6 +15,12 @@ COPY package.json yarn.lock* ./
 
 # Install ALL dependencies including devDependencies
 RUN yarn install --frozen-lockfile --non-interactive --production=false
+
+# check ncc
+RUN echo "=== Checking ncc ===" && \
+    which ncc && \
+    ncc --version && \
+    echo $PATH
 
 # Copy source code
 COPY . .
