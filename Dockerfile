@@ -20,10 +20,18 @@ RUN yarn install --frozen-lockfile --non-interactive --production=false
 RUN echo "=== Checking ncc ===" && \
     which ncc && \
     ncc --version && \
+    echo "Global ncc path: $(which ncc)" && \
+    echo "Local ncc path: $(ls -la ./node_modules/.bin/ncc)" && \
+    ./node_modules/.bin/ncc --version && \
     echo $PATH
 
 # Copy source code
 COPY . .
+
+# Debug: Check tsconfig.json
+RUN echo "=== Checking tsconfig.json ===" && \
+    cat tsconfig.json && \
+    echo "=== End tsconfig.json ==="
 
 # Build application
 RUN yarn run buildNum && yarn run ncc:build
