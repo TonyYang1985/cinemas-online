@@ -20,7 +20,7 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "paths": {
-      "@/*": ["src/*"]
+      "@footy/*": ["src/*"]
     },
     "baseUrl": ".",
     "types": ["node"]
