@@ -65,22 +65,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract Docker metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: |
-            yxj1985/${{ github.event.repository.name }}
-            ${{ env.REGISTRY_GHCR }}/${{ steps.repo.outputs.repository }}
-          tags: |
-            type=raw,value=latest,enable={{is_default_branch}}
-            type=raw,value=v${{ steps.package-version.outputs.current-version}}
-            type=raw,value=v${{ steps.date.outputs.date }}
-            type=ref,event=branch
-            type=ref,event=pr
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-
       - name: Build And Push to Multiple Registries
         uses: docker/build-push-action@v5
         with:
@@ -88,8 +72,13 @@ jobs:
           file: ./Dockerfile
           platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: |
+            yxj1985/${{ steps.repo.outputs.name }}:latest
+            yxj1985/${{ steps.repo.outputs.name }}:v${{ steps.package-version.outputs.current-version}}
+            yxj1985/${{ steps.repo.outputs.name }}:v${{ steps.date.outputs.date }}
+            ${{ env.REGISTRY_GHCR }}/${{ steps.repo.outputs.repository }}:latest
+            ${{ env.REGISTRY_GHCR }}/${{ steps.repo.outputs.repository }}:v${{ steps.package-version.outputs.current-version}}
+            ${{ env.REGISTRY_GHCR }}/${{ steps.repo.outputs.repository }}:v${{ steps.date.outputs.date }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           provenance: false
@@ -103,22 +92,36 @@ jobs:
           echo "- **Package Version:** v${{ steps.package-version.outputs.current-version}}" >> $GITHUB_STEP_SUMMARY
           echo "- **Build Timestamp:** ${{ steps.date.outputs.date }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Git Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### 🐳 Docker Hub" >> $GITHUB_STEP_SUMMARY
           echo '```bash' >> $GITHUB_STEP_SUMMARY
-          echo "docker pull yxj1985/${{ github.event.repository.name }}:latest" >> $GITHUB_STEP_SUMMARY
-          echo "docker pull yxj1985/${{ github.event.repository.name }}:v${{ steps.package-version.outputs.current-version}}" >> $GITHUB_STEP_SUMMARY
+          echo "docker pull yxj1985/${{ steps.repo.outputs.name }}:latest" >> $GITHUB_STEP_SUMMARY
+          echo "docker pull yxj1985/${{ steps.repo.outputs.name }}:v${{ steps.package-version.outputs.current-version}}" >> $GITHUB_STEP_SUMMARY
+          echo "docker pull yxj1985/${{ steps.repo.outputs.name }}:v${{ steps.date.outputs.date }}" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### 🐙 GitHub Container Registry" >> $GITHUB_STEP_SUMMARY
           echo '```bash' >> $GITHUB_STEP_SUMMARY
           echo "docker pull ${{ env.REGISTRY_GHCR }}/${{ steps.repo.outputs.repository }}:latest" >> $GITHUB_STEP_SUMMARY
           echo "docker pull ${{ env.REGISTRY_GHCR }}/${{ steps.repo.outputs.repository }}:v${{ steps.package-version.outputs.current-version}}" >> $GITHUB_STEP_SUMMARY
+          echo "docker pull ${{ env.REGISTRY_GHCR }}/${{ steps.repo.outputs.repository }}:v${{ steps.date.outputs.date }}" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### 🔗 Links" >> $GITHUB_STEP_SUMMARY
-          echo "- [Docker Hub Repository](https://hub.docker.com/r/yxj1985/${{ github.event.repository.name }})" >> $GITHUB_STEP_SUMMARY
+          echo "- [Docker Hub Repository](https://hub.docker.com/r/yxj1985/${{ steps.repo.outputs.name }})" >> $GITHUB_STEP_SUMMARY
           echo "- [GHCR Package](https://github.com/${{ github.repository }}/pkgs/container/${{ steps.repo.outputs.name }})" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📋 All Tags Pushed" >> $GITHUB_STEP_SUMMARY
+          echo "#### Docker Hub:" >> $GITHUB_STEP_SUMMARY
+          echo "- \`yxj1985/${{ steps.repo.outputs.name }}:latest\`" >> $GITHUB_STEP_SUMMARY
+          echo "- \`yxj1985/${{ steps.repo.outputs.name }}:v${{ steps.package-version.outputs.current-version}}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- \`yxj1985/${{ steps.repo.outputs.name }}:v${{ steps.date.outputs.date }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "#### GHCR:" >> $GITHUB_STEP_SUMMARY
+          echo "- \`${{ env.REGISTRY_GHCR }}/${{ steps.repo.outputs.repository }}:latest\`" >> $GITHUB_STEP_SUMMARY
+          echo "- \`${{ env.REGISTRY_GHCR }}/${{ steps.repo.outputs.repository }}:v${{ steps.package-version.outputs.current-version}}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- \`${{ env.REGISTRY_GHCR }}/${{ steps.repo.outputs.repository }}:v${{ steps.date.outputs.date }}\`" >> $GITHUB_STEP_SUMMARY
 
       - name: Build Summary for PR
         if: github.event_name == 'pull_request'
@@ -129,3 +132,6 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "- **Platforms:** linux/amd64, linux/arm64" >> $GITHUB_STEP_SUMMARY
           echo "- **Version:** v${{ steps.package-version.outputs.current-version}}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Would push to:**" >> $GITHUB_STEP_SUMMARY
+          echo "  - Docker Hub: yxj1985/${{ steps.repo.outputs.name }}" >> $GITHUB_STEP_SUMMARY
+          echo "  - GHCR: ${{ env.REGISTRY_GHCR }}/${{ steps.repo.outputs.repository }}" >> $GITHUB_STEP_SUMMARY
